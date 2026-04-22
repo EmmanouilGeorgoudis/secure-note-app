@@ -45,6 +45,9 @@ public class ConsoleMenu {
         }
     }
 
+    //Jag arbetar efter lärarens princip/arkitekur. Login sammarbetar med service som i sin tur hämtar info från db
+    //via repository klassen.
+
     public void login() {
         System.out.println("Username:");
         String username = scanner.nextLine();

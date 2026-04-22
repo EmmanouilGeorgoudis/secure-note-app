@@ -36,9 +36,9 @@ public class AuthService {
 
         return BCrypt.checkpw(password, storedPassword);
     }
-//
-//    //Vad får du göra?
-//    public boolean authorization(String name) {
-//
-//    }
+
+    //Vad får du göra? (Ska jag returnerna String eller kanske ett Objekt? t ex Admin-objekt eller tom enum?)
+    public String authorization(String username, String password) {
+
+    }
 }
