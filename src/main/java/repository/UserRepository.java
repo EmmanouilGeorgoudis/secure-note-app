@@ -35,7 +35,7 @@ public class UserRepository {
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("password_hash");
+                    return rs.getString("password");
                 }
             }
         } catch (SQLException e) {
