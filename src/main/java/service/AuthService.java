@@ -44,7 +44,7 @@ public class AuthService {
 
     //Vad får du göra? (Ska jag returnerna String eller kanske ett Objekt? t ex Admin-objekt eller tom enum?)
     //AI säger att jag inte ska ha static, men jag struntar i det.
-    private static Role authorization(String username, String password) {
+    private Role authorization(String username, String password) {
         return Role.ADMIN;
     }
 //    public boolean isAdmin(String username) {

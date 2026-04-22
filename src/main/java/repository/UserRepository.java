@@ -1,9 +1,12 @@
 package repository;
 
 import config.DatabaseConnection;
-import service.AuthService;
+import model.Role;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserRepository {
 
@@ -46,8 +49,29 @@ public class UserRepository {
         return null;
     }
 
-    public String getUserRole(String username) {
+
+/*
+* Reflektion: att konvertera till enum i SQL var inte nödvändigt eftersom jag måste oavsett göra det här i metoden
+* från String till enum. Det känns dock säkrare i och med att det låses även i SQL och hindrar stavningsfel
+*/
+    public Role getUserRole(String username) {
         String sql = "SELECT role FROM users WHERE username = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role"); //Tydlingen hämtar man även enums som String
+
+                    return Role.valueOf(role.toUpperCase());
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Databasfel: " + e.getMessage());
+        }
+        return null;
     }
 }
