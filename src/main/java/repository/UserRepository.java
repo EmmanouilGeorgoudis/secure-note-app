@@ -1,10 +1,9 @@
 package repository;
 
 import config.DatabaseConnection;
+import service.AuthService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserRepository {
 
@@ -25,5 +24,30 @@ public class UserRepository {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String getPasswordHash(String username) {
+        String sql = "SELECT password FROM users WHERE username = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("password");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Databasfel: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    public String getUserRole(String username) {
+        String sql = "SELECT role FROM users WHERE username = ?";
+
     }
 }

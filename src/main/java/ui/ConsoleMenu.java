@@ -15,13 +15,15 @@ public class ConsoleMenu {
         while(running) {
             System.out.println("----Secure Note----");
             System.out.println("1. Register User");
-            System.out.println("2. Exit");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> register();
-                case "2" -> running = false;
+                case "2" -> login();
+                case "3" -> running = false;
                 default -> System.out.println("Invalid choice");
             }
         }
@@ -40,6 +42,23 @@ public class ConsoleMenu {
             System.out.println("User registered successfully");
         } else {
             System.out.println("Username or Password is incorrect");
+        }
+    }
+
+    //Jag arbetar efter lärarens princip/arkitekur. Login sammarbetar med service som i sin tur hämtar info från db
+    //via repository klassen.
+
+    public void login() {
+        System.out.println("Username:");
+        String username = scanner.nextLine();
+
+        System.out.println("Password:");
+        String password = scanner.nextLine();
+
+        if (service.authentication(username, password)) {
+            System.out.println("In");
+        } else {
+            System.out.println("fail");
         }
     }
 }
