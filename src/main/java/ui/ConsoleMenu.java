@@ -21,7 +21,8 @@ public class ConsoleMenu {
 
             switch (choice) {
                 case "1" -> register();
-                case "2" -> running = false;
+                case "2" -> Login();
+                case "3" -> running = false;
                 default -> System.out.println("Invalid choice");
             }
         }

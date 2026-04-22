@@ -26,22 +26,15 @@ public class AuthService {
     }
 
     //Vem är du?
-    public boolean authentication() {
-        System.out.println("Username: ");
-        String inputUsername = scanner.nextLine();
+    public boolean authentication(String username, String password) {
+        String storedPassword = repository.getPasswordHash(username);
 
-        System.out.println("Password: ");
-        String inputPassword = scanner.nextLine();
-
+        if (storedPassword == null) {
+            return false;
+        }
         //Jag kontrollerar och svarar efter inmatning av båda för att inte ge ut mer info än vad man behöver - Yayha
 
-        if (BCrypt.checkpw(inputUsername, storedUsername)
-                && BCrypt.checkpw(inputPassword, storedPassword)) {
-
-            return true;
-        }
-
-        return false;
+        return BCrypt.checkpw(password, storedPassword);
     }
 //
 //    //Vad får du göra?
