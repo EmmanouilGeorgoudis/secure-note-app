@@ -10,6 +10,11 @@ public class AuthService {
     private final Scanner scanner = new Scanner(System.in);
     private final UserRepository repository = new UserRepository();
 
+    public enum Role {
+        USER,
+        ADMIN
+    }
+
     public boolean register(String username, String password) {
         if (username == null || username.isBlank()) {
             System.out.println("Username is empty");
@@ -38,7 +43,12 @@ public class AuthService {
     }
 
     //Vad får du göra? (Ska jag returnerna String eller kanske ett Objekt? t ex Admin-objekt eller tom enum?)
-    public String authorization(String username, String password) {
-
+    //AI säger att jag inte ska ha static, men jag struntar i det.
+    private static Role authorization(String username, String password) {
+        return Role.ADMIN;
     }
+//    public boolean isAdmin(String username) {
+//        String role = repository.getUserRole(username);
+//        return "ADMIN".equalsIgnoreCase(role);
+//    }
 }

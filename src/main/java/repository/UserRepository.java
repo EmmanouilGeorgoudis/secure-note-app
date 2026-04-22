@@ -1,6 +1,7 @@
 package repository;
 
 import config.DatabaseConnection;
+import service.AuthService;
 
 import java.sql.*;
 
@@ -43,5 +44,10 @@ public class UserRepository {
         }
 
         return null;
+    }
+
+    public String getUserRole(String username) {
+        String sql = "SELECT role FROM users WHERE username = ?";
+
     }
 }
