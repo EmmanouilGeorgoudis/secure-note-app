@@ -27,7 +27,8 @@ public class UserRepository {
             return rows > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return false;
         }
 
     }
