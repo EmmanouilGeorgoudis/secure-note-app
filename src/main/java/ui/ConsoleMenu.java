@@ -55,8 +55,9 @@ public class ConsoleMenu {
         System.out.println("Password:");
         String password = scanner.nextLine();
 
-        if (service.authentication(username, password)) {
-            System.out.println("In");
+        if (service.isAuthenticated(username, password)) {
+            String role = service.getAuthorization(username, password).toString().toLowerCase();
+            System.out.println("You're " + role);
         } else {
             System.out.println("fail");
         }

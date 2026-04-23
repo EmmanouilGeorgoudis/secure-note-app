@@ -64,9 +64,9 @@ public class UserRepository {
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    String role = rs.getString("role"); //Tydlingen hämtar man även enums som String
+                    String roleSQL = rs.getString("role"); //Tydlingen hämtar man även enums som String
 
-                    return Role.valueOf(role.toUpperCase());
+                    return Role.valueOf(roleSQL.toUpperCase());
                 }
             }
         } catch (SQLException e) {
