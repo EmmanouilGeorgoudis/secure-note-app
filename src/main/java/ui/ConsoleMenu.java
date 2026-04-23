@@ -48,12 +48,12 @@ public class ConsoleMenu {
     //Jag arbetar efter lärarens princip/arkitekur. Login sammarbetar med service som i sin tur hämtar info från db
     //via repository klassen.
 
-    public void login() {
+    private void login() {
         System.out.println("Username:");
-        String username = scanner.nextLine();
+        String username = scanner.nextLine().trim();
 
         System.out.println("Password:");
-        String password = scanner.nextLine();
+        String password = scanner.nextLine().trim();
 
         if (service.isAuthenticated(username, password)) {
             String role = service.getAuthorization(username, password).toString().toLowerCase();
