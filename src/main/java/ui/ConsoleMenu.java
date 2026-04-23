@@ -3,6 +3,7 @@ package ui;
 import model.User;
 import service.AuthService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleMenu {
@@ -60,20 +61,51 @@ public class ConsoleMenu {
         if (user != null) {
             String role = user.getRole().toString().toLowerCase();
             System.out.println("You're " + role);
-            note(user);
+            userMenu(user);
         } else {
             System.out.println("fail");
         }
     }
 
-    private void note(User user) {
+    private void userMenu(User user) {
+        boolean inMenu = true;
+        while (inMenu) {
+            System.out.println("\n--- USER MENU ---");
+            System.out.println("1. Create note");
+            System.out.println("2. Se/Hantera anteckningar");
+            System.out.println("3. Logout");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> createNote(user);
+                case "2" -> showNoteTitles(user);
+                case "3" -> inMenu = false;
+                default -> System.out.println("Felaktigt val");
+            }
+        }
+    }
+
+    private void createNote(User user) {
+
+        System.out.println("Write your note title: ");
+        String title = scanner.nextLine();
+
         System.out.println("Write your note: ");
         String content = scanner.nextLine();
 
-        if (service.addNote(user, content)) {
+        if (service.createNote(user, title, content)) {
             System.out.println("Notes saved!");
         } else {
             System.out.println("Something went wrong.");
         }
+    }
+
+    public void updateNote(int noteId, String newTitle, String newContent) {
+        repository.updateNote(noteId, newTitle, newContent);
+    }
+
+    public List<String> showNoteTitles(User user) {
+        return repository.getNotesByUserId(userId);
     }
 }
