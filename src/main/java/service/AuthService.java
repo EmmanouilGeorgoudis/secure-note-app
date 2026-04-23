@@ -18,8 +18,8 @@ public class AuthService {
             System.out.println("Password is empty");
             return false;
         }
-        String hashedPassword = BCrypt.hashpw(password,BCrypt.gensalt());
-        return repository.saveUser(username,hashedPassword, "USER");
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        return repository.saveUser(username, hashedPassword, "USER");
     }
 
     //Vem är du? authentication
@@ -37,12 +37,28 @@ public class AuthService {
             System.out.println("User not found");
             return null;
         }
-        boolean checkPw = BCrypt.checkpw(password,user.getPassword());
-        if(checkPw){
+        boolean checkPw = BCrypt.checkpw(password, user.getPassword());
+        if (checkPw) {
             return user;
         }
         return null;
     }
+
+    //Helt handskriven metod utan AI! Oh my goood! Ok, jag tar återigen in id som unik, ej username
+    //Måste fundera över var jag ska kontrollera Role, dvs authorization
+    public boolean addNote(User user, String content) {
+        if (content == null || content.isBlank()) {
+            return false;
+        }
+        return repository.saveNote(user.getId(), content);
+    }
+
+
+}
+
+
+
+
 
     //Vad får du göra? (Ska jag returnerna String eller kanske ett Objekt? t ex Admin-objekt eller tom enum?)
 
@@ -54,4 +70,3 @@ public class AuthService {
 //        }
 //        return null;
 //    }
-}

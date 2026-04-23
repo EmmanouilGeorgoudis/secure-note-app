@@ -60,6 +60,7 @@ public class ConsoleMenu {
         if (user != null) {
             String role = user.getRole().toString().toLowerCase();
             System.out.println("You're " + role);
+            note(user);
         } else {
             System.out.println("fail");
         }
@@ -67,8 +68,12 @@ public class ConsoleMenu {
 
     private void note(User user) {
         System.out.println("Write your note: ");
-        String notes = scanner.nextLine();
+        String content = scanner.nextLine();
 
-
+        if (service.addNote(user, content)) {
+            System.out.println("Notes saved!");
+        } else {
+            System.out.println("Something went wrong.");
+        }
     }
 }
