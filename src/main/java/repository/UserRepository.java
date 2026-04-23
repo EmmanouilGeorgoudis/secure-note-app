@@ -11,6 +11,27 @@ import java.sql.SQLException;
 
 public class UserRepository {
 
+    //Jag har valt id som nyckel så att användaren kommer ha möjlighet att byta användarnamn vid uppdaterad version
+    public boolean saveNote(int id, String noteContent) {
+        String sql = "INSERT INTO notes (id, content) VALUES (?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, noteContent);
+
+            statement.setInt(1, id);
+            statement.setString(2, noteContent);
+
+            int rows = statement.executeUpdate();
+
+            return rows > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public boolean existsByUsername(String username) {
         String sql = "SELECT id FROM users WHERE username = ?";
 

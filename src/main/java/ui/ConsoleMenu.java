@@ -30,7 +30,7 @@ public class ConsoleMenu {
         }
     }
 
-    public void register() {
+    private void register() {
         System.out.println("Enter your username:");
         String username = scanner.nextLine();
 
@@ -63,5 +63,12 @@ public class ConsoleMenu {
         } else {
             System.out.println("fail");
         }
+    }
+
+    private void note(User user) {
+        System.out.println("Write your note: ");
+        String notes = scanner.nextLine();
+
+
     }
 }
