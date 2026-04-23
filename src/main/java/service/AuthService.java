@@ -1,6 +1,5 @@
 package service;
 
-import model.Role;
 import model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repository.UserRepository;
@@ -19,9 +18,7 @@ public class AuthService {
             System.out.println("Password is empty");
             return false;
         }
-
         String hashedPassword = BCrypt.hashpw(password,BCrypt.gensalt());
-
         return repository.saveUser(username,hashedPassword, "USER");
     }
 
@@ -48,11 +45,13 @@ public class AuthService {
     }
 
     //Vad får du göra? (Ska jag returnerna String eller kanske ett Objekt? t ex Admin-objekt eller tom enum?)
-    public Role getAuthorization(String username, String password) {
-        if (isAuthenticated(username, password)) { //User != null
 
-            return repository.getUserRole(username);
-        }
-        return null;
-    }
+    //Den metoden behövs inte tydligen eftersom vi har skapat User objekt och kan plocka "role" direkt därifrån
+//    public Role getAuthorization(String username, String password) {
+//        if (isAuthenticated(username, password)) { //User != null
+//
+//            return repository.getUserRole(username);
+//        }
+//        return null;
+//    }
 }

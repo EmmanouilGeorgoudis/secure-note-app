@@ -66,7 +66,11 @@ public class UserRepository {
             return false;
         }
     }
+}
 
+
+
+/*
     public String getPasswordHash(String username) {
         String sql = "SELECT password FROM users WHERE username = ?";
 
@@ -86,7 +90,8 @@ public class UserRepository {
 
         return null;
     }
-}
+
+*/
 /*
 
     public Role getUserRole(String username) {
