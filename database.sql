@@ -11,7 +11,7 @@ CREATE TABLE users(
 CREATE TABLE notes(
     id int auto_increment primary key,
     user_id int not null,
+    title varchar(50) default 'untitled',
     content text not null,
-    created_at timestamp default CURRENT_TIMESTAMP,
     foreign key (user_id) references users(id) on delete cascade
 );

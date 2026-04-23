@@ -1,5 +1,6 @@
 package ui;
 
+import model.Note;
 import model.User;
 import service.AuthService;
 
@@ -46,9 +47,6 @@ public class ConsoleMenu {
             System.out.println("Username or Password is incorrect");
         }
     }
-
-    //Jag arbetar efter lärarens princip/arkitekur. Login sammarbetar med service som i sin tur hämtar info från db
-    //via repository klassen.
 
     private void login() {
         System.out.println("Username:");
@@ -101,11 +99,11 @@ public class ConsoleMenu {
         }
     }
 
-    public void updateNote(int noteId, String newTitle, String newContent) {
-        repository.updateNote(noteId, newTitle, newContent);
+    public List<Note> showNoteTitles(User user) {
+        return repository.getNotesByUserId(user.getId());
     }
 
-    public List<String> showNoteTitles(User user) {
-        return repository.getNotesByUserId(userId);
+    public void updateNote(int noteId, String newTitle, String newContent) {
+        repository.updateNote(noteId, newTitle, newContent);
     }
 }
