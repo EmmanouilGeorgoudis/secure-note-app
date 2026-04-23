@@ -46,17 +46,17 @@ public class AuthService {
 
     //Helt handskriven metod utan AI! Oh my goood! Ok, jag tar återigen in id som unik, ej username
     //Måste fundera över var jag ska kontrollera Role, dvs authorization
-    public boolean addNote(User user, String content) {
+    public boolean createNote(User user, String title, String content) {
         if (content == null || content.isBlank()) {
             return false;
         }
-        return repository.saveNote(user.getId(), content);
+        return repository.saveNote(user.getId(), title, content);
     }
+
+    //public boolean updateNote()
 
 
 }
-
-
 
 
 

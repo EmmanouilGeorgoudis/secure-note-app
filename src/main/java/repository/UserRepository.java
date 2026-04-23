@@ -12,14 +12,15 @@ import java.sql.SQLException;
 public class UserRepository {
 
     //Jag har valt id som nyckel så att användaren kommer ha möjlighet att byta användarnamn vid uppdaterad version
-    public boolean saveNote(int userId, String noteContent) {
-        String sql = "INSERT INTO notes (user_id, content) VALUES (?, ?)";
+    public boolean saveNote(int userId, String title, String noteContent) {
+        String sql = "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, userId);
-            statement.setString(2, noteContent);
+            statement.setString(2, (title == null || title.isBlank()) ? "untitled" : title);
+            statement.setString(3, noteContent);
 
             int rows = statement.executeUpdate();
 
