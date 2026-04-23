@@ -2,6 +2,7 @@ package repository;
 
 import config.DatabaseConnection;
 import model.Role;
+import model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,11 +11,48 @@ import java.sql.SQLException;
 
 public class UserRepository {
 
+    public boolean existsByUsername(String username) {
+        String sql = "SELECT id FROM users WHERE username = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public User findByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+                user.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public boolean saveUser(String username, String password, String role) {
         String sql = "INSERT INTO users (username, password, role) VALUES(?, ?, ?)";
 
-        try(Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, username);
             statement.setString(2, password);
@@ -23,7 +61,7 @@ public class UserRepository {
             int rows = statement.executeUpdate();
 
             return rows > 0;
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -48,12 +86,9 @@ public class UserRepository {
 
         return null;
     }
-
-
+}
 /*
-* Reflektion: att konvertera till enum i SQL var inte nödvändigt eftersom jag måste oavsett göra det här i metoden
-* från String till enum. Det känns dock säkrare i och med att det låses även i SQL och hindrar stavningsfel
-*/
+
     public Role getUserRole(String username) {
         String sql = "SELECT role FROM users WHERE username = ?";
 
@@ -75,3 +110,5 @@ public class UserRepository {
         return null;
     }
 }
+
+*/

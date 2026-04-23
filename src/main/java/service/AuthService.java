@@ -1,24 +1,22 @@
 package service;
 
+import model.Role;
+import model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repository.UserRepository;
-import model.Role;
-
-import java.util.Scanner;
 
 public class AuthService {
 
-    private final Scanner scanner = new Scanner(System.in);
     private final UserRepository repository = new UserRepository();
 
     public boolean register(String username, String password) {
 
         if (username == null || username.isBlank()) {
-            //System.out.println("Username is empty");
+            System.out.println("Username is empty");
             return false;
         }
         if (password == null || password.isBlank()) {
-            //System.out.println("Password is empty");
+            System.out.println("Password is empty");
             return false;
         }
 
@@ -27,21 +25,31 @@ public class AuthService {
         return repository.saveUser(username,hashedPassword, "USER");
     }
 
-    //Vem är du?
-    public boolean isAuthenticated(String username, String password) {
-        String storedPassword = repository.getPasswordHash(username);
-
-        if (storedPassword == null) {
-            return false;
+    //Vem är du? authentication
+    public User login(String username, String password) {
+        if (username == null || username.isBlank()) {
+            System.out.println("Username is empty");
+            return null;
         }
-        //Jag kontrollerar och svarar efter inmatning av båda för att inte ge ut mer info än vad man behöver - Yayha
-
-        return BCrypt.checkpw(password, storedPassword);
+        if (password == null || password.isBlank()) {
+            System.out.println("Password is empty");
+            return null;
+        }
+        User user = repository.findByUsername(username);
+        if (user == null) {
+            System.out.println("User not found");
+            return null;
+        }
+        boolean checkPw = BCrypt.checkpw(password,user.getPassword());
+        if(checkPw){
+            return user;
+        }
+        return null;
     }
 
     //Vad får du göra? (Ska jag returnerna String eller kanske ett Objekt? t ex Admin-objekt eller tom enum?)
     public Role getAuthorization(String username, String password) {
-        if (isAuthenticated(username, password)) {
+        if (isAuthenticated(username, password)) { //User != null
 
             return repository.getUserRole(username);
         }
