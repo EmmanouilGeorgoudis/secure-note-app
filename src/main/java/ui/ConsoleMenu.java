@@ -1,5 +1,6 @@
 package ui;
 
+import model.User;
 import service.AuthService;
 
 import java.util.Scanner;
@@ -55,8 +56,9 @@ public class ConsoleMenu {
         System.out.println("Password:");
         String password = scanner.nextLine().trim();
 
-        if (service.isAuthenticated(username, password)) {
-            String role = service.getAuthorization(username, password).toString().toLowerCase();
+        User user = service.login(username, password);
+        if (user != null) {
+            String role = user.getRole().toString().toLowerCase();
             System.out.println("You're " + role);
         } else {
             System.out.println("fail");
