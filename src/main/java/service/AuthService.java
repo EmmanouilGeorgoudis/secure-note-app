@@ -5,7 +5,6 @@ import model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AuthService {
@@ -58,7 +57,7 @@ public class AuthService {
     }
 
     public List<Note> getNotesForUser(User user) {
-        List<Note> notesForUser = repository.findAllNotesByUserId(user.getId());
+        List<Note> notesForUser = repository.findNotesByUserId(user.getId());
 
         return notesForUser;
      }

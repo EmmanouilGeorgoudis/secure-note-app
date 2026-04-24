@@ -72,7 +72,7 @@ public class UserRepository {
         return null;
     }
 
-    public List<Note> findAllByUserId(int userId) {
+    public List<Note> findNotesByUserId(int userId) {
         List<Note> notes = new ArrayList<>();
         String sql = "SELECT id, user_id, title, content FROM notes WHERE user_id = ?";
 

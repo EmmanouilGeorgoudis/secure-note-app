@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 
 //Till presentationen, jag har gått efter utbildare principer/stil(t ex med booleans i menyer), strukturen i metodordning nedan har en logik, är den bra?
+//Reflektion: intressant hur benämning av metoder som betjänar varandra påverkas och visar arkitekturisk struktur såsom
+//getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -105,21 +107,31 @@ public class ConsoleMenu {
     private void manageNotes(User user) {
         boolean inNotes = true;
 
-        List<Note> userNotes = service.getNotesForUser(user);
         while (inNotes) {
-            int i = 1;
-            for (Note note : userNotes){
-                System.out.println(i + " " + note.getTitle());
-                i++;
+            List<Note> userNotes = service.getNotesForUser(user);
+
+            if (userNotes.isEmpty()) {
+                System.out.println("You have no notes yet.");
+                return;
             }
-            System.out.println();
+
+            System.out.println("\n*** YOUR NOTES ***");
+            for (int i = 0; i < userNotes.size(); i++) {
+                System.out.println((i +1) + " " + userNotes.get(i).getTitle());
+            }
+            System.out.println("0. Exit");
+            System.out.println("Choose one note to manage: ");
+
+            int choice = scanner.nextInt();
+            if (choice == 0) {
+                inNotes = false;
+            } else if (choice > 0 && choice <= userNotes.size()){
+                Note selectedNote = userNotes.get(choice - 1);
+            }
         }
 
     }
 
-//    public List<Note> showNoteTitles(User user) {
-//        return repository.getNotesByUserId(user.getId());
-//    }
 //
 //    public void updateNote(int noteId, String newTitle, String newContent) {
 //        repository.updateNote(noteId, newTitle, newContent);
