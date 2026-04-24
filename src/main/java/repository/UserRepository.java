@@ -1,6 +1,7 @@
 package repository;
 
 import config.DatabaseConnection;
+import model.Note;
 import model.Role;
 import model.User;
 
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
 
@@ -57,6 +60,33 @@ public class UserRepository {
 
             if (resultSet.next()) {
                 User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+                user.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Note> findAllaByUserId(int userId) {
+        List<Note> notes = new ArrayList<>();
+        String sql = "SELECT id, title, content FROM notes WHERE user_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Note note = new Note();
+                note.setId();
+                note.getUserId();
+                note.setTitle();
+                note.getContent();
                 user.setId(resultSet.getInt("id"));
                 user.setUsername(resultSet.getString("username"));
                 user.setPassword(resultSet.getString("password"));

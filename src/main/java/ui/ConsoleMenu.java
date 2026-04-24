@@ -1,8 +1,10 @@
 package ui;
 
+import model.Note;
 import model.User;
 import service.AuthService;
 
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -103,8 +105,13 @@ public class ConsoleMenu {
     private void manageNotes(User user) {
         boolean inNotes = true;
 
-        //List med titlar
+        List<Note> userNotes = service.getNotesForUser(user);
         while (inNotes) {
+            int i = 1;
+            for (Note note : userNotes){
+                System.out.println(i + " " + note.getTitle());
+                i++;
+            }
             System.out.println();
         }
 
