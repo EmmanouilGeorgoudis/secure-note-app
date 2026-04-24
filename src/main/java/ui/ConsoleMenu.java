@@ -19,7 +19,7 @@ public class ConsoleMenu {
     public void start() {
         boolean running = true;
 
-        while(running) {
+        while (running) {
             System.out.println("----Secure Note----");
             System.out.println("1. Register User");
             System.out.println("2. Login");
@@ -84,7 +84,7 @@ public class ConsoleMenu {
                 case "1" -> createNote(user);
                 case "2" -> manageNotes(user);
                 case "3" -> inMenu = false;
-                default -> System.out.println("Felaktigt val");
+                default -> System.out.println("wrong");
             }
         }
     }
@@ -117,7 +117,7 @@ public class ConsoleMenu {
 
             System.out.println("\n*** YOUR NOTES ***");
             for (int i = 0; i < userNotes.size(); i++) {
-                System.out.println((i +1) + ". " + userNotes.get(i).getTitle());
+                System.out.println((i + 1) + ". " + userNotes.get(i).getTitle());
             }
             System.out.println("0. Exit");
             System.out.println("Choose one note to manage: ");
@@ -125,15 +125,10 @@ public class ConsoleMenu {
             int choice = scanner.nextInt();
             if (choice == 0) {
                 inNotes = false;
-            } else if (choice > 0 && choice <= userNotes.size()){
+            } else if (choice > 0 && choice <= userNotes.size()) {
                 Note selectedNote = userNotes.get(choice - 1);
             }
         }
 
     }
-
-//
-//    public void updateNote(int noteId, String newTitle, String newContent) {
-//        repository.updateNote(noteId, newTitle, newContent);
-//    }
 }

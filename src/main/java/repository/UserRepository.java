@@ -33,7 +33,6 @@ public class UserRepository {
             e.printStackTrace();
             return false;
         }
-
     }
 
     public boolean existsByUsername(String username) {
