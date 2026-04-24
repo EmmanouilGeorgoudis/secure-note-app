@@ -52,6 +52,8 @@ public class ConsoleMenu {
         }
     }
 
+    //Om login, min gamla authentication, har den rollen och authorization ska ju ske separat, antar jag att det ska ske
+    //i service? men anropas redan här i login. T ex service.getAuthorization?
     private void login() {
         System.out.println("Username:");
         String username = scanner.nextLine().trim();
@@ -61,6 +63,7 @@ public class ConsoleMenu {
 
         User user = service.login(username, password);
         if (user != null) {
+            //user.getAuthorization
             String role = user.getRole().toString().toLowerCase();
             System.out.println("You're " + role);
             userMenu(user);

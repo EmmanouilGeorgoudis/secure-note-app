@@ -40,4 +40,12 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public boolean isAdmin() {
+        return this.role == Role.ADMIN;
+    }
+
+    public boolean isUser() {
+        return this.role == Role.USER;
+    }
 }
