@@ -7,6 +7,10 @@ import service.AuthService;
 import java.util.List;
 import java.util.Scanner;
 
+
+//Till presentationen, jag har gått efter utbildare principer/stil(t ex med booleans i menyer), strukturen i metodordning nedan har en logik, är den bra?
+//Reflektion: intressant hur benämning av metoder som betjänar varandra påverkas och visar arkitekturisk struktur såsom
+//getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -15,7 +19,7 @@ public class ConsoleMenu {
     public void start() {
         boolean running = true;
 
-        while(running) {
+        while (running) {
             System.out.println("----Secure Note----");
             System.out.println("1. Register User");
             System.out.println("2. Login");
@@ -67,19 +71,20 @@ public class ConsoleMenu {
 
     private void userMenu(User user) {
         boolean inMenu = true;
+
         while (inMenu) {
             System.out.println("\n--- USER MENU ---");
             System.out.println("1. Create note");
-            System.out.println("2. Se/Hantera anteckningar");
+            System.out.println("2. Manage notes");
             System.out.println("3. Logout");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> createNote(user);
-                case "2" -> showNoteTitles(user);
+                case "2" -> manageNotes(user);
                 case "3" -> inMenu = false;
-                default -> System.out.println("Felaktigt val");
+                default -> System.out.println("wrong");
             }
         }
     }
@@ -99,11 +104,31 @@ public class ConsoleMenu {
         }
     }
 
-    public List<Note> showNoteTitles(User user) {
-        return repository.getNotesByUserId(user.getId());
-    }
+    private void manageNotes(User user) {
+        boolean inNotes = true;
 
-    public void updateNote(int noteId, String newTitle, String newContent) {
-        repository.updateNote(noteId, newTitle, newContent);
+        while (inNotes) {
+            List<Note> userNotes = service.getNotesForUser(user);
+
+            if (userNotes.isEmpty()) {
+                System.out.println("You have no notes yet.");
+                return;
+            }
+
+            System.out.println("\n*** YOUR NOTES ***");
+            for (int i = 0; i < userNotes.size(); i++) {
+                System.out.println((i + 1) + ". " + userNotes.get(i).getTitle());
+            }
+            System.out.println("0. Exit");
+            System.out.println("Choose one note to manage: ");
+
+            int choice = scanner.nextInt();
+            if (choice == 0) {
+                inNotes = false;
+            } else if (choice > 0 && choice <= userNotes.size()) {
+                Note selectedNote = userNotes.get(choice - 1);
+            }
+        }
+
     }
 }

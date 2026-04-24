@@ -1,8 +1,11 @@
 package service;
 
+import model.Note;
 import model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repository.UserRepository;
+
+import java.util.List;
 
 public class AuthService {
 
@@ -53,9 +56,11 @@ public class AuthService {
         return repository.saveNote(user.getId(), title, content);
     }
 
-    //public boolean updateNote()
+    public List<Note> getNotesForUser(User user) {
+        List<Note> notesForUser = repository.findNotesByUserId(user.getId());
 
-
+        return notesForUser;
+     }
 }
 
 

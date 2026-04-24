@@ -1,6 +1,7 @@
 package repository;
 
 import config.DatabaseConnection;
+import model.Note;
 import model.Role;
 import model.User;
 
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
 
@@ -30,7 +33,6 @@ public class UserRepository {
             e.printStackTrace();
             return false;
         }
-
     }
 
     public boolean existsByUsername(String username) {
@@ -67,6 +69,30 @@ public class UserRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Note> findNotesByUserId(int userId) {
+        List<Note> notes = new ArrayList<>();
+        String sql = "SELECT id, user_id, title, content FROM notes WHERE user_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Note note = new Note();
+                note.setId(resultSet.getInt("id"));
+                note.setUserId(resultSet.getInt("user_id"));
+                note.setTitle(resultSet.getString("title"));
+                note.setContent(resultSet.getString("content"));
+
+                notes.add(note);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return notes;
     }
 
 
