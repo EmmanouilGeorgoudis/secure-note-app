@@ -22,8 +22,28 @@ public class UserRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, userId);
-            statement.setString(2, (title == null || title.isBlank()) ? "untitled" : title);
+            statement.setString(2, title);
             statement.setString(3, noteContent);
+
+            int rows = statement.executeUpdate();
+
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateNote(int noteId, String newTitle, String newContent) {
+        String sql = "UPDATE notes SET title = ?, content = ?, WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, newTitle);
+            statement.setString(2, newContent);
+            statement.setInt(3, noteId);
 
             int rows = statement.executeUpdate();
 

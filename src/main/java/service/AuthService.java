@@ -53,6 +53,8 @@ public class AuthService {
         if (content == null || content.isBlank()) {
             return false;
         }
+
+        title = (title == null || title.isBlank() ? "untitled" : title);
         return repository.saveNote(user.getId(), title, content);
     }
 
