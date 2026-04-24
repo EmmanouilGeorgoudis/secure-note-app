@@ -122,13 +122,26 @@ public class ConsoleMenu {
             System.out.println("0. Exit");
             System.out.println("Choose one note to manage: ");
 
+            Note selectedNote = new Note();
             int choice = scanner.nextInt();
             if (choice == 0) {
                 inNotes = false;
             } else if (choice > 0 && choice <= userNotes.size()) {
-                Note selectedNote = userNotes.get(choice - 1);
+                selectedNote = userNotes.get(choice - 1);
+            }
+
+            System.out.println("Actual title: " + selectedNote.getTitle());
+            System.out.print("New title (or press ENTER to keep the old): ");
+            String newTitle = scanner.nextLine();
+
+            System.out.println("New text (or press ENTER to keep the old: ");
+            String newContent = scanner.nextLine();
+
+            if (service.updateNote(selectedNote, newTitle, newContent)) {
+                System.out.println("New note updated!");
+            } else {
+                System.out.println("Failed");
             }
         }
-
     }
 }

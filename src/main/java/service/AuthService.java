@@ -26,6 +26,7 @@ public class AuthService {
     }
 
     //Vem är du? authentication
+    //Var ska authorization ske??? (kontrollera Role)
     public User login(String username, String password) {
         if (username == null || username.isBlank()) {
             System.out.println("Username is empty");
@@ -47,8 +48,8 @@ public class AuthService {
         return null;
     }
 
-    //Helt handskriven metod utan AI! Oh my goood! Ok, jag tar återigen in id som unik, ej username
-    //Måste fundera över var jag ska kontrollera Role, dvs authorization
+    //Jag tar återigen in id som unik, ej username
+    //Jag ändrar till ternära if:ar för att jag tycker om dem.
     public boolean createNote(User user, String title, String content) {
         if (content == null || content.isBlank()) {
             return false;
@@ -62,7 +63,19 @@ public class AuthService {
         List<Note> notesForUser = repository.findNotesByUserId(user.getId());
 
         return notesForUser;
-     }
+    }
+
+    //Ska returnera gamla text eller titel vid tom
+    public boolean updateNote(Note oldNote, String inputTitle, String inputContent) {
+        String finalTitle = (inputTitle == null || inputTitle.isBlank())
+                ? oldNote.getTitle()
+                : inputTitle;
+        String finalContent = (inputContent == null || inputContent.isBlank())
+                ? oldNote.getContent()
+                : inputContent;
+
+        return repository.updateNote(oldNote.getId(), finalTitle, finalContent);
+    }
 }
 
 
