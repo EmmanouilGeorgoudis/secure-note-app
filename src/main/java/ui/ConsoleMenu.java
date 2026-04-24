@@ -1,12 +1,12 @@
 package ui;
 
-import model.Note;
 import model.User;
 import service.AuthService;
 
-import java.util.List;
 import java.util.Scanner;
 
+
+//Till presentationen, jag har gått efter utbildare principer/stil(t ex med booleans i menyer), strukturen i metodordning nedan har en logik, är den bra?
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -67,17 +67,18 @@ public class ConsoleMenu {
 
     private void userMenu(User user) {
         boolean inMenu = true;
+
         while (inMenu) {
             System.out.println("\n--- USER MENU ---");
             System.out.println("1. Create note");
-            System.out.println("2. Se/Hantera anteckningar");
+            System.out.println("2. Manage notes");
             System.out.println("3. Logout");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> createNote(user);
-                case "2" -> showNoteTitles(user);
+                case "2" -> manageNotes(user);
                 case "3" -> inMenu = false;
                 default -> System.out.println("Felaktigt val");
             }
@@ -99,11 +100,21 @@ public class ConsoleMenu {
         }
     }
 
-    public List<Note> showNoteTitles(User user) {
-        return repository.getNotesByUserId(user.getId());
+    private void manageNotes(User user) {
+        boolean inNotes = true;
+
+        //List med titlar
+        while (inNotes) {
+            System.out.println();
+        }
+
     }
 
-    public void updateNote(int noteId, String newTitle, String newContent) {
-        repository.updateNote(noteId, newTitle, newContent);
-    }
+//    public List<Note> showNoteTitles(User user) {
+//        return repository.getNotesByUserId(user.getId());
+//    }
+//
+//    public void updateNote(int noteId, String newTitle, String newContent) {
+//        repository.updateNote(noteId, newTitle, newContent);
+//    }
 }
