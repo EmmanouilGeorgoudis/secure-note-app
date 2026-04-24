@@ -91,6 +91,8 @@ public class UserRepository {
         return null;
     }
 
+    //Är det nödvändigt att gå via service getNotesForUser? känns som den inte gör nåt vettig,
+    //endast följer arkitekturen.. fråga utbildaren
     public List<Note> findNotesByUserId(int userId) {
         List<Note> notes = new ArrayList<>();
         String sql = "SELECT id, user_id, title, content FROM notes WHERE user_id = ?";
@@ -135,53 +137,3 @@ public class UserRepository {
         }
     }
 }
-
-
-
-/*
-    public String getPasswordHash(String username) {
-        String sql = "SELECT password FROM users WHERE username = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, username);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("password");
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Databasfel: " + e.getMessage());
-        }
-
-        return null;
-    }
-
-*/
-/*
-
-    public Role getUserRole(String username) {
-        String sql = "SELECT role FROM users WHERE username = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, username);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    String roleSQL = rs.getString("role"); //Tydlingen hämtar man även enums som String
-
-                    return Role.valueOf(roleSQL.toUpperCase());
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Databasfel: " + e.getMessage());
-        }
-        return null;
-    }
-}
-
-*/
