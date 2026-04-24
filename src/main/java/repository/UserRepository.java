@@ -72,31 +72,29 @@ public class UserRepository {
         return null;
     }
 
-    public List<Note> findAllaByUserId(int userId) {
+    public List<Note> findAllByUserId(int userId) {
         List<Note> notes = new ArrayList<>();
-        String sql = "SELECT id, title, content FROM notes WHERE user_id = ?";
+        String sql = "SELECT id, user_id, title, content FROM notes WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Note note = new Note();
-                note.setId();
-                note.getUserId();
-                note.setTitle();
-                note.getContent();
-                user.setId(resultSet.getInt("id"));
-                user.setUsername(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-                return user;
+                note.setId(resultSet.getInt("id"));
+                note.setUserId(resultSet.getInt("user_id"));
+                note.setTitle(resultSet.getString("title"));
+                note.setContent(resultSet.getString("content"));
+
+                notes.add(note);
+                return notes;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return notes;
     }
 
 
