@@ -117,7 +117,7 @@ public class ConsoleMenu {
 
             System.out.println("\n*** YOUR NOTES ***");
             for (int i = 0; i < userNotes.size(); i++) {
-                System.out.println((i +1) + " " + userNotes.get(i).getTitle());
+                System.out.println((i +1) + ". " + userNotes.get(i).getTitle());
             }
             System.out.println("0. Exit");
             System.out.println("Choose one note to manage: ");

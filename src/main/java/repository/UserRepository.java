@@ -89,7 +89,6 @@ public class UserRepository {
                 note.setContent(resultSet.getString("content"));
 
                 notes.add(note);
-                return notes;
             }
         } catch (SQLException e) {
             e.printStackTrace();
