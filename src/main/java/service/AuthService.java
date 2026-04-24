@@ -49,7 +49,6 @@ public class AuthService {
     }
 
     //Jag tar återigen in id som unik, ej username
-    //Jag ändrar till ternära if:ar för att jag tycker om dem.
     public boolean createNote(User user, String title, String content) {
         if (content == null || content.isBlank()) {
             return false;
@@ -65,11 +64,12 @@ public class AuthService {
         return notesForUser;
     }
 
-    //Ska returnera gamla text eller titel vid tom
+    //Ska returnera gamla text eller titel vid tom, kontroll sker här
     public boolean updateNote(Note oldNote, String inputTitle, String inputContent) {
         String finalTitle = (inputTitle == null || inputTitle.isBlank())
                 ? oldNote.getTitle()
                 : inputTitle;
+
         String finalContent = (inputContent == null || inputContent.isBlank())
                 ? oldNote.getContent()
                 : inputContent;

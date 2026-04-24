@@ -122,25 +122,30 @@ public class ConsoleMenu {
             System.out.println("0. Exit");
             System.out.println("Choose one note to manage: ");
 
-            Note selectedNote = new Note();
-            int choice = scanner.nextInt();
+            int choice = Integer.parseInt(scanner.nextLine());
             if (choice == 0) {
                 inNotes = false;
-            } else if (choice > 0 && choice <= userNotes.size()) {
-                selectedNote = userNotes.get(choice - 1);
+                continue;
             }
 
-            System.out.println("Actual title: " + selectedNote.getTitle());
-            System.out.print("New title (or press ENTER to keep the old): ");
-            String newTitle = scanner.nextLine();
+            if (choice > 0 && choice <= userNotes.size()) {
+                Note selectedNote = selectedNote = userNotes.get(choice - 1);
 
-            System.out.println("New text (or press ENTER to keep the old: ");
-            String newContent = scanner.nextLine();
 
-            if (service.updateNote(selectedNote, newTitle, newContent)) {
-                System.out.println("New note updated!");
+                System.out.println("Actual title: " + selectedNote.getTitle());
+                System.out.println("New title (or press ENTER to keep the old): ");
+                String newTitle = scanner.nextLine();
+
+                System.out.println("New text (or press ENTER to keep the old): ");
+                String newContent = scanner.nextLine();
+
+                if (service.updateNote(selectedNote, newTitle, newContent)) {
+                    System.out.println("New note updated!");
+                } else {
+                    System.out.println("Update failed");
+                }
             } else {
-                System.out.println("Failed");
+                System.out.println("Invalid choice.");
             }
         }
     }

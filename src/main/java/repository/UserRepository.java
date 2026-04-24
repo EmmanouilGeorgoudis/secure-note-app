@@ -36,7 +36,7 @@ public class UserRepository {
     }
 
     public boolean updateNote(int noteId, String newTitle, String newContent) {
-        String sql = "UPDATE notes SET title = ?, content = ?, WHERE id = ?";
+        String sql = "UPDATE notes SET title = ?, content = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
