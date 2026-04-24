@@ -25,8 +25,6 @@ public class AuthService {
         return repository.saveUser(username, hashedPassword, "USER");
     }
 
-    //Vem är du? authentication
-    //Var ska authorization ske??? (kontrollera Role)
     public User login(String username, String password) {
         if (username == null || username.isBlank()) {
             System.out.println("Username is empty");
@@ -48,12 +46,10 @@ public class AuthService {
         return null;
     }
 
-    //Jag tar återigen in id som unik, ej username
     public boolean createNote(User user, String title, String content) {
         if (content == null || content.isBlank()) {
             return false;
         }
-
         if (title == null || title.isBlank()) {
             title = "untitled";
         }
@@ -66,7 +62,6 @@ public class AuthService {
         return notesForUser;
     }
 
-    //Ska returnera gamla text eller titel vid tom, kontroll sker här
     public boolean updateNote(Note oldNote, String inputTitle, String inputContent) {
         String finalTitle = (inputTitle == null || inputTitle.isBlank())
                 ? oldNote.getTitle()
@@ -79,16 +74,3 @@ public class AuthService {
         return repository.updateNote(oldNote.getId(), finalTitle, finalContent);
     }
 }
-
-
-
-    //Vad får du göra? (Ska jag returnerna String eller kanske ett Objekt? t ex Admin-objekt eller tom enum?)
-
-    //Den metoden behövs inte tydligen eftersom vi har skapat User objekt och kan plocka "role" direkt därifrån
-//    public Role getAuthorization(String username, String password) {
-//        if (isAuthenticated(username, password)) { //User != null
-//
-//            return repository.getUserRole(username);
-//        }
-//        return null;
-//    }

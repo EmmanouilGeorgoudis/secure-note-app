@@ -39,7 +39,7 @@ public class ConsoleMenu {
     private void register() {
         System.out.println("Enter your username:");
         String username = scanner.nextLine();
-
+//      Här tror jag jag ska lägga existsByUsername
         System.out.println("Enter your password:");
         String password = scanner.nextLine();
 
@@ -52,8 +52,6 @@ public class ConsoleMenu {
         }
     }
 
-    //Om login, min gamla authentication, har den rollen och authorization ska ju ske separat, antar jag att det ska ske
-    //i service? men anropas redan här i login. T ex service.getAuthorization?
     private void login() {
         System.out.println("Username:");
         String username = scanner.nextLine().trim();
@@ -63,12 +61,14 @@ public class ConsoleMenu {
 
         User user = service.login(username, password);
         if (user != null) {
-            //user.getAuthorization
             String role = user.getRole().toString().toLowerCase();
-            System.out.println("You're " + role);
-            userMenu(user);
+            System.out.println("Login successful! Role: " + role);
+            switch (user.getRole()) {
+                case ADMIN -> adminMenu(user);
+                case USER -> userMenu(user);
+            }
         } else {
-            System.out.println("fail");
+            System.out.println("Invalid username or password.");
         }
     }
 
@@ -149,6 +149,29 @@ public class ConsoleMenu {
                 }
             } else {
                 System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+// jag undrar lite om struktur i hooks, ska allt som angår userMeny vara under login, sen adminMenu med alla relaterade
+//metoder osv?
+
+    private void adminMenu(User user) {
+        boolean inMenu = true;
+//Den här är lånad från userMenu, fortsätt bygga om härifrån
+        while (inMenu) {
+            System.out.println("\n--- ADMIN MENU ---");
+            System.out.println("1. Create note");
+            System.out.println("2. Manage notes");
+            System.out.println("3. Logout");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> createNote(user);
+                case "2" -> manageNotes(user);
+                case "3" -> inMenu = false;
+                default -> System.out.println("wrong");
             }
         }
     }

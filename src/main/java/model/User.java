@@ -41,11 +41,12 @@ public class User {
         this.role = role;
     }
 
-    public boolean isAdmin() {
-        return this.role == Role.ADMIN;
-    }
-
-    public boolean isUser() {
-        return this.role == Role.USER;
-    }
+    //Tror de inte behövs men avvaktar med att ta bort
+//    public boolean isAdmin() {
+//        return this.role == Role.ADMIN;
+//    }
+//
+//    public boolean isUser() {
+//        return this.role == Role.USER;
+//    }
 }
