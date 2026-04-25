@@ -1,7 +1,6 @@
 package ui;
 
 import model.Note;
-import model.Role;
 import model.User;
 import service.AuthService;
 
@@ -178,14 +177,14 @@ public class ConsoleMenu {
             } else {
                 System.out.println("\n--- ALL REGISTERED USERS ---");
                 for (User user : allUsers) {
-                    if (user.getRole() == Role.USER) {
-                        System.out.println("ID: " + user.getId() + " - Username: " + user.getUsername());
-                    }
+                    System.out.println("ID: " + user.getId() + " - Username: " + user.getUsername());
                 }
             }
-            System.out.println("Choose a user to manage by Id: ");
+            System.out.println("Choose a user to manage by Id (or \"0\" for Exit): ");
 
             int manageUserById = Integer.parseInt(scanner.nextLine()); //Lämpligt variabelnamn?
+
+            if (manageUserById == 0) {return;} //la if-satsen här så slipper pipeline under jobba i onödan
 
             User selectedUser = allUsers.stream()
                     .filter(su -> su.getId() == manageUserById)
@@ -199,11 +198,8 @@ public class ConsoleMenu {
             }
         }
     }
-
 // jag undrar lite om struktur i hooks, ska allt som angår userMeny vara under login, sen adminMenu med alla relaterade
 //metoder osv?
-
-
 
     private void adminMenu(User admin) {
         boolean inMenu = true;

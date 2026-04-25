@@ -4,3 +4,5 @@ I ui, i login så skickas User och Admin till respektive menu vilket är authori
 1) Login är ju en form av authentication, och Role  är authorization,
 dessa skulle dock inte blandas. Är det fel?
 2) I AuthService har jag kontroller om Role återigen, är det onödigt?
+
+Ska jag ändra Exit till en siffra? t ex 0
