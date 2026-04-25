@@ -93,7 +93,7 @@ public class UserRepository {
 
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users WHERE role != 'ADMIN'"; //Ändrat från if satsen att filtrera bort ADMINs redan här, best practices
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -104,9 +104,7 @@ public class UserRepository {
                 user.setId(resultSet.getInt("id"));
                 user.setUsername(resultSet.getString("username"));
                 user.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-                if (user.getRole() != Role.ADMIN) {
-                    users.add(user);
-                }
+                users.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
