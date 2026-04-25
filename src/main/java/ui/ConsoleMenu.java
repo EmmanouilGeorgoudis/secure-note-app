@@ -166,6 +166,19 @@ public class ConsoleMenu {
         }
     }
 
+    private void manageUsers(User admin) {
+        boolean inAdminMenu = true;
+
+        while (inAdminMenu) {
+            List<User> users = service.getAllUsers(user); //Skapa samma logik som service.getNotesForUser(user);
+
+            if (users.isEmpty()) {
+                System.out.println("There are no users yet.");
+                return;
+            }
+        }
+    }
+
 // jag undrar lite om struktur i hooks, ska allt som angår userMeny vara under login, sen adminMenu med alla relaterade
 //metoder osv?
 
