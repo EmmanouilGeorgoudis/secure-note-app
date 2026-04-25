@@ -1,10 +1,12 @@
 package service;
 
 import model.Note;
+import model.Role;
 import model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AuthService {
@@ -61,6 +63,15 @@ public class AuthService {
 
         return notesForUser;
     }
+
+    public List<User> getAllUsers(User admin) {
+        if (admin == null || admin.getRole() != Role.ADMIN) {
+            System.out.println("Unarthorized access attempt!");
+            return new ArrayList<>();
+        }
+        return repository.findAllUsers();
+    }
+
 
     public boolean updateNote(Note oldNote, String inputTitle, String inputContent) {
         String finalTitle = (inputTitle == null || inputTitle.isBlank())

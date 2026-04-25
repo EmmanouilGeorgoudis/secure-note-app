@@ -91,6 +91,27 @@ public class UserRepository {
         return null;
     }
 
+    public List<User> findAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
     //Är det nödvändigt att gå via service getNotesForUser? känns som den inte gör nåt vettig,
     //endast följer arkitekturen.. fråga utbildaren
     public List<Note> findNotesByUserId(int userId) {

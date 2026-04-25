@@ -170,11 +170,15 @@ public class ConsoleMenu {
         boolean inAdminMenu = true;
 
         while (inAdminMenu) {
-            List<User> users = service.getAllUsers(user); //Skapa samma logik som service.getNotesForUser(user);
+            List<User> allUsers = service.getAllUsers(admin); //Skapa samma logik som service.getNotesForUser(user);
 
-            if (users.isEmpty()) {
-                System.out.println("There are no users yet.");
+            if (allUsers.isEmpty()) {
+                System.out.println("No users found.");
                 return;
+            } else {
+            System.out.println("\n--- ALL REGISTERED USERS ---");
+            for (User u : allUsers) {
+                System.out.println("ID: " + u.getId() + " | Name: " + u.getUsername());
             }
         }
     }
