@@ -131,7 +131,7 @@ public class ConsoleMenu {
                 return;
             }
 
-            System.out.println("\n*** YOUR NOTES ***");
+            System.out.println("\n--- YOUR NOTES ---");
             for (int i = 0; i < userNotes.size(); i++) {
                 System.out.println((i + 1) + ". " + userNotes.get(i).getTitle());
             }
@@ -170,15 +170,16 @@ public class ConsoleMenu {
         boolean inAdminMenu = true;
 
         while (inAdminMenu) {
-            List<User> allUsers = service.getAllUsers(admin); //Skapa samma logik som service.getNotesForUser(user);
+            List<User> allUsers = service.getAllUsers(admin); //Skapa samma logik uppåt till repo som service.getNotesForUser(user);
 
             if (allUsers.isEmpty()) {
                 System.out.println("No users found.");
                 return;
             } else {
-            System.out.println("\n--- ALL REGISTERED USERS ---");
-            for (User u : allUsers) {
-                System.out.println("ID: " + u.getId() + " | Name: " + u.getUsername());
+                System.out.println("\n--- ALL REGISTERED USERS ---");
+                for (User user : allUsers) {
+                    System.out.println("ID: " + user.getId() + " | Name: " + user.getUsername());
+                }
             }
         }
     }
@@ -186,21 +187,23 @@ public class ConsoleMenu {
 // jag undrar lite om struktur i hooks, ska allt som angår userMeny vara under login, sen adminMenu med alla relaterade
 //metoder osv?
 
-    private void adminMenu(User user) {
+    private void adminMenu(User admin) {
         boolean inMenu = true;
 //Den här är lånad från userMenu, fortsätt bygga om härifrån
         while (inMenu) {
             System.out.println("\n--- ADMIN MENU ---");
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
-            System.out.println("3. Logout");
+            System.out.println("3. Manage users");
+            System.out.println("4. Logout");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1" -> createNote(user);
-                case "2" -> manageNotes(user);
-                case "3" -> inMenu = false;
+                case "1" -> createNote(admin);
+                case "2" -> manageNotes(admin);
+                case "3" -> manageUsers(admin);
+                case "4" -> inMenu = false;
                 default -> System.out.println("wrong");
             }
         }
