@@ -132,7 +132,7 @@ public class ConsoleMenu {
                 return;
             }
 
-            System.out.println("\n--- YOUR NOTES ---");
+            System.out.println("\n--- ALL NOTES ---");
             for (int i = 0; i < userNotes.size(); i++) {
                 System.out.println((i + 1) + ". " + userNotes.get(i).getTitle());
             }
@@ -186,13 +186,18 @@ public class ConsoleMenu {
             System.out.println("Choose a user to manage by Id: ");
 
             int manageUserById = Integer.parseInt(scanner.nextLine()); //Lämpligt variabelnamn?
-            //Hur kan jag mata in manageNotes(user) där user är den som har Id == manageUserId?
-            User user = new User();
-            if (manageUserById == user.getId())
 
+            User selectedUser = allUsers.stream()
+                    .filter(su -> su.getId() == manageUserById)
+                    .findFirst()
+                    .orElse(null);
 
+            if (selectedUser != null) {
+                manageNotes(selectedUser);
+            } else {
+                System.out.println("User not found.");
+            }
         }
-
     }
 
 // jag undrar lite om struktur i hooks, ska allt som angår userMeny vara under login, sen adminMenu med alla relaterade
