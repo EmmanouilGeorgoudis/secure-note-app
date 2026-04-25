@@ -1,6 +1,7 @@
 package ui;
 
 import model.Note;
+import model.Role;
 import model.User;
 import service.AuthService;
 
@@ -52,7 +53,7 @@ public class ConsoleMenu {
     private void register() {
         System.out.println("Enter your username:");
         String username = scanner.nextLine();
-//      Här tror jag jag ska lägga existsByUsername
+//      Här tror jag jag ska lägga existsByUsername?
         System.out.println("Enter your password:");
         String password = scanner.nextLine();
 
@@ -100,7 +101,7 @@ public class ConsoleMenu {
                 case "1" -> createNote(user);
                 case "2" -> manageNotes(user);
                 case "3" -> inMenu = false;
-                default -> System.out.println("wrong");
+                default -> System.out.println("Invalid choice.");
             }
         }
     }
@@ -138,7 +139,7 @@ public class ConsoleMenu {
             System.out.println("0. Exit");
             System.out.println("Choose one note to manage: ");
 
-            int choice = Integer.parseInt(scanner.nextLine());
+            int choice = Integer.parseInt(scanner.nextLine()); //Felsökning? vad händer om man matar in bokstav?
             if (choice == 0) {
                 inNotes = false;
                 continue;
@@ -146,7 +147,6 @@ public class ConsoleMenu {
 
             if (choice > 0 && choice <= userNotes.size()) {
                 Note selectedNote = userNotes.get(choice - 1);
-
 
                 System.out.println("Actual title: " + selectedNote.getTitle());
                 System.out.println("New title (or press ENTER to keep the old): ");
@@ -178,14 +178,27 @@ public class ConsoleMenu {
             } else {
                 System.out.println("\n--- ALL REGISTERED USERS ---");
                 for (User user : allUsers) {
-                    System.out.println("ID: " + user.getId() + " | Name: " + user.getUsername());
+                    if (user.getRole() == Role.USER) {
+                        System.out.println("ID: " + user.getId() + " - Username: " + user.getUsername());
+                    }
                 }
             }
+            System.out.println("Choose a user to manage by Id: ");
+
+            int manageUserById = Integer.parseInt(scanner.nextLine()); //Lämpligt variabelnamn?
+            //Hur kan jag mata in manageNotes(user) där user är den som har Id == manageUserId?
+            User user = new User();
+            if (manageUserById == user.getId())
+
+
         }
+
     }
 
 // jag undrar lite om struktur i hooks, ska allt som angår userMeny vara under login, sen adminMenu med alla relaterade
 //metoder osv?
+
+
 
     private void adminMenu(User admin) {
         boolean inMenu = true;
@@ -204,7 +217,7 @@ public class ConsoleMenu {
                 case "2" -> manageNotes(admin);
                 case "3" -> manageUsers(admin);
                 case "4" -> inMenu = false;
-                default -> System.out.println("wrong");
+                default -> System.out.println("Invalid choice.");
             }
         }
     }
