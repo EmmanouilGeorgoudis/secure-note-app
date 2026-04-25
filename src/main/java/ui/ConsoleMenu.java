@@ -11,6 +11,19 @@ import java.util.Scanner;
 //Till presentationen, jag har gått efter utbildare principer/stil(t ex med booleans i menyer), strukturen i metodordning nedan har en logik, är den bra?
 //Reflektion: intressant hur benämning av metoder som betjänar varandra påverkas och visar arkitekturisk struktur såsom
 //getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
+
+/*
+AI:s förslag på struktur:
+
+Metodordning och logisk struktur
+I Java brukar man följa principen "Top-Down". Det innebär att de mest övergripande metoderna (som start()) ligger överst,
+och de detaljerade hjälpmetoderna ligger under. Rekommenderad ordning i din klass:
+
+Start/Main-loop: start()
+Auth-flöde: register(), login()
+Huvudmenyer: userMenu(), adminMenu()
+Funktionella metoder (Hooks): createNote(), manageNotes()
+ */
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -132,7 +145,7 @@ public class ConsoleMenu {
             }
 
             if (choice > 0 && choice <= userNotes.size()) {
-                Note selectedNote = selectedNote = userNotes.get(choice - 1);
+                Note selectedNote = userNotes.get(choice - 1);
 
 
                 System.out.println("Actual title: " + selectedNote.getTitle());
