@@ -6,3 +6,6 @@ dessa skulle dock inte blandas. Är det fel?
 2) I AuthService har jag kontroller om Role återigen, är det onödigt?
 
 Ska jag ändra Exit till en siffra? t ex 0
+
+i findByUsername i repository, skulle jag ist för en User i taget kunna skapa en String lista
+med namn och ta bort alla onödiga getters? eftersom dess syfte är att bara hitta om username är upptaget

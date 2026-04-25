@@ -69,7 +69,7 @@ public class UserRepository {
         }
         return false;
     }
-
+//Fråga till Yayha i notes
     public User findByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection connection = DatabaseConnection.getConnection();

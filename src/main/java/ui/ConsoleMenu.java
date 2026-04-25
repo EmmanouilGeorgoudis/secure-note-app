@@ -33,7 +33,7 @@ public class ConsoleMenu {
         boolean running = true;
 
         while (running) {
-            System.out.println("----Secure Note----");
+            System.out.println("--- SECURE NOTE ---");
             System.out.println("1. Register User");
             System.out.println("2. Login");
             System.out.println("3. Exit");
