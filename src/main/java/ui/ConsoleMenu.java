@@ -207,7 +207,7 @@ public class ConsoleMenu {
 
     private void adminMenu(User admin) {
         boolean inMenu = true;
-//Den här är lånad från userMenu, fortsätt bygga om härifrån
+
         while (inMenu) {
             System.out.println("\n--- ADMIN MENU ---");
             System.out.println("1. Create note");

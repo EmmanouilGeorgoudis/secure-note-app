@@ -104,7 +104,9 @@ public class UserRepository {
                 user.setId(resultSet.getInt("id"));
                 user.setUsername(resultSet.getString("username"));
                 user.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-                users.add(user);
+                if (user.getRole() != Role.ADMIN) {
+                    users.add(user);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
