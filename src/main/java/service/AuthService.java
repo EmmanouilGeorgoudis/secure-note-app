@@ -84,4 +84,12 @@ public class AuthService {
 
         return repository.updateNote(oldNote.getId(), finalTitle, finalContent);
     }
+
+//    public boolean deleteNote() {
+//        return;
+//    }
+//    public boolean deleteUser() {
+//        return;
+//    }
+
 }

@@ -138,7 +138,7 @@ public class ConsoleMenu {
             System.out.println("0. Exit");
             System.out.println("Choose one note to manage: ");
 
-            int choice = Integer.parseInt(scanner.nextLine()); //Felsökning? vad händer om man matar in bokstav?
+            int choice = Integer.parseInt(scanner.nextLine());
             if (choice == 0) {
                 inNotes = false;
                 continue;
@@ -181,18 +181,18 @@ public class ConsoleMenu {
                 }
             }
 
-            int selectedId; //Lämpligt variabelnamn?
-            while (true) {
-                System.out.println("Choose a user to manage by Id (or \"0\" for Exit): ");
-                String input = scanner.nextLine().trim();
+            int selectedId = -1; //Lämpligt variabelnamn?
 
-                try {
-                    selectedId = Integer.parseInt(input);
-                    break;
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Enter a number for Id: ");
-                }
+            System.out.println("Choose a user to manage by Id (or \"0\" for Exit): ");
+            String input = scanner.nextLine().trim();
+
+            try {
+                selectedId = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Enter a number for Id: ");
+                continue;
             }
+
             if (selectedId == 0) {return;} //la if-satsen här så slipper pipeline under jobba i onödan
 
             int searchId = selectedId;
