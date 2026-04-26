@@ -12,18 +12,6 @@ import java.util.Scanner;
 //Reflektion: intressant hur benämning av metoder som betjänar varandra påverkas och visar arkitekturisk struktur såsom
 //getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
 
-/*
-AI:s förslag på struktur:
-
-Metodordning och logisk struktur
-I Java brukar man följa principen "Top-Down". Det innebär att de mest övergripande metoderna (som start()) ligger överst,
-och de detaljerade hjälpmetoderna ligger under. Rekommenderad ordning i din klass:
-
-Start/Main-loop: start()
-Auth-flöde: register(), login()
-Huvudmenyer: userMenu(), adminMenu()
-Funktionella metoder (Hooks): createNote(), manageNotes()
- */
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -142,7 +130,7 @@ public class ConsoleMenu {
             try {
                 choice = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input, use numbers.");
+                System.out.println("Invalid input, please use numbers.");
                 continue;
             }
 
@@ -151,20 +139,22 @@ public class ConsoleMenu {
             if (choice > 0 && choice <= userNotes.size()) {
                 Note selectedNote = userNotes.get(choice - 1);
 
-                System.out.println("Actual title: " + selectedNote.getTitle());
-                System.out.println("New title (or press ENTER to keep the old): ");
-                String newTitle = scanner.nextLine();
+                System.out.println("\nSelected: " + selectedNote.getTitle());
+                System.out.println("1. Update Note");
+                System.out.println("2. DELETE Note");
+                System.out.println("0. Cancel");
+                System.out.print("Action: ");
 
-                System.out.println("New text (or press ENTER to keep the old): ");
-                String newContent = scanner.nextLine();
+                String action = scanner.nextLine();
 
-                if (service.updateNote(selectedNote, newTitle, newContent)) {
-                    System.out.println("New note updated!");
-                } else {
-                    System.out.println("Update failed");
+                switch (action) {
+                    case "1" -> updateNoteUi(selectedNote);
+                    case "2" -> deleteNoteUi(selectedNote);
+                    case "0" -> {}
+                    default -> System.out.println("Invalid choice. Try again");
                 }
             } else {
-                System.out.println("Invalid choice.");
+                System.out.println("Note not found.");
             }
         }
     }
@@ -185,7 +175,7 @@ public class ConsoleMenu {
                 }
             }
 
-            int selectedId = -1; //Lämpligt variabelnamn?
+            int selectedId = -1;
 
             System.out.println("Choose a user to manage by Id (or \"0\" for Exit): ");
             String input = scanner.nextLine().trim();
@@ -206,14 +196,23 @@ public class ConsoleMenu {
                     .orElse(null);
 
             if (selectedUser != null) {
-                manageNotes(selectedUser);
+                System.out.println("\nManaging User: " + selectedUser.getUsername());
+                System.out.println("1. Manage User's Notes");
+                System.out.println("2. DELETE User Account");
+                System.out.println("0. Cancel");
+
+                String action = scanner.nextLine();
+                switch (action) {
+                    case "1" -> manageNotes(selectedUser);
+                    case "2" -> deleteUserUi(selectedUser);
+                    case "0" -> {}
+                    default -> System.out.println("Invalid action.");
+                }
             } else {
                 System.out.println("User not found.");
             }
         }
     }
-// jag undrar lite om struktur i hooks, ska allt som angår userMeny vara under login, sen adminMenu med alla relaterade
-//metoder osv?
 
     private void adminMenu(User admin) {
         boolean inMenu = true;
@@ -233,6 +232,39 @@ public class ConsoleMenu {
                 case "3" -> manageUsers(admin);
                 case "4" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private void updateNoteUi(Note selectedNote) {
+        System.out.println("Actual title: " + selectedNote.getTitle());
+        System.out.print("New title (ENTER to keep): ");
+        String newTitle = scanner.nextLine();
+
+        System.out.print("New text (ENTER to keep): ");
+        String newContent = scanner.nextLine();
+
+        if (service.updateNote(selectedNote, newTitle, newContent)) {
+            System.out.println("Updated successfully!");
+        }
+    }
+
+    private void deleteNoteUi(Note selectedNote) {
+        System.out.print("Delete '" + selectedNote.getTitle() + "'? (y/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("y")) {
+            if (service.deleteNote(selectedNote.getId())) {
+                System.out.println("Deleted.");
+            }
+        }
+    }
+
+    private void deleteUserUi(User selectedUser) {
+        System.out.print("ARE YOU SURE? This will delete user '" + selectedUser.getUsername() + "' and ALL their notes! (y/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("y")) {
+            if (service.deleteUser(selectedUser.getId())) {
+                System.out.println("Deleted.");
+            } else {
+                System.out.println("Could not delete user.");
             }
         }
     }
