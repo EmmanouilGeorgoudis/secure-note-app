@@ -41,10 +41,13 @@ public class ConsoleMenu {
         System.out.println("Enter your username:");
         String username = scanner.nextLine();
 
+        //Är det ok här och inte i service? fördel, kontrolleras direkt och ger möjlighet att ändra innan man matar in fler
+        //uppgifter. Nackdel: belastar ui?
         while (service.existsByUsername(username)) {
             System.out.println("Username already exists. Try antoher: ");
             username = scanner.nextLine();
         }
+
         System.out.println("Enter your password:");
         String password = scanner.nextLine();
 
