@@ -40,7 +40,11 @@ public class ConsoleMenu {
     private void register() {
         System.out.println("Enter your username:");
         String username = scanner.nextLine();
-//      Här tror jag jag ska lägga existsByUsername?
+
+        while (service.existsByUsername(username)) {
+            System.out.println("Username already exists. Try antoher: ");
+            username = scanner.nextLine();
+        }
         System.out.println("Enter your password:");
         String password = scanner.nextLine();
 

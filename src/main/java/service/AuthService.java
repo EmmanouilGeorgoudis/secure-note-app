@@ -27,6 +27,10 @@ public class AuthService {
         return repository.saveUser(username, hashedPassword, "USER");
     }
 
+    public boolean existsByUsername(String username) {
+        return repository.existsByUsername(username);
+    }
+
     public User login(String username, String password) {
         if (username == null || username.isBlank()) {
             System.out.println("Username is empty");
