@@ -180,14 +180,24 @@ public class ConsoleMenu {
                     System.out.println("ID: " + user.getId() + " - Username: " + user.getUsername());
                 }
             }
-            System.out.println("Choose a user to manage by Id (or \"0\" for Exit): ");
 
-            int manageUserById = Integer.parseInt(scanner.nextLine()); //Lämpligt variabelnamn?
+            int selectedId; //Lämpligt variabelnamn?
+            while (true) {
+                System.out.println("Choose a user to manage by Id (or \"0\" for Exit): ");
+                String input = scanner.nextLine().trim();
 
-            if (manageUserById == 0) {return;} //la if-satsen här så slipper pipeline under jobba i onödan
+                try {
+                    selectedId = Integer.parseInt(input);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Enter a number for Id: ");
+                }
+            }
+            if (selectedId == 0) {return;} //la if-satsen här så slipper pipeline under jobba i onödan
 
+            int searchId = selectedId;
             User selectedUser = allUsers.stream()
-                    .filter(su -> su.getId() == manageUserById)
+                    .filter(su -> su.getId() == searchId)
                     .findFirst()
                     .orElse(null);
 
