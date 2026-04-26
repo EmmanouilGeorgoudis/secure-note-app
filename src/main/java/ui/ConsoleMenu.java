@@ -80,14 +80,16 @@ public class ConsoleMenu {
             System.out.println("\n--- USER MENU ---");
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
-            System.out.println("3. Logout");
+            System.out.println("3. DELETE my acount");
+            System.out.println("4. Logout");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> createNote(user);
                 case "2" -> manageNotes(user);
-                case "3" -> inMenu = false;
+                case "3" -> {deleteUserUi(user);return;}
+                case "4" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
@@ -222,7 +224,8 @@ public class ConsoleMenu {
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
             System.out.println("3. Manage users");
-            System.out.println("4. Logout");
+            System.out.println("4. DELETE my acount");
+            System.out.println("5. Logout");
 
             String choice = scanner.nextLine();
 
@@ -230,7 +233,8 @@ public class ConsoleMenu {
                 case "1" -> createNote(admin);
                 case "2" -> manageNotes(admin);
                 case "3" -> manageUsers(admin);
-                case "4" -> inMenu = false;
+                case "4" -> {deleteUserUi(admin);return;}
+                case "5" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
@@ -259,7 +263,7 @@ public class ConsoleMenu {
     }
 
     private void deleteUserUi(User selectedUser) {
-        System.out.print("ARE YOU SURE? This will delete user '" + selectedUser.getUsername() + "' and ALL their notes! (y/n): ");
+        System.out.print("ARE YOU SURE? This will delete user '" + selectedUser.getUsername() + "' and ALL notes! (y/n): ");
         if (scanner.nextLine().equalsIgnoreCase("y")) {
             if (service.deleteUser(selectedUser.getId())) {
                 System.out.println("Deleted.");
