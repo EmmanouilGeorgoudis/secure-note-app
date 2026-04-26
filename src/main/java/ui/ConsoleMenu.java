@@ -127,22 +127,26 @@ public class ConsoleMenu {
             List<Note> userNotes = service.getNotesForUser(user);
 
             if (userNotes.isEmpty()) {
-                System.out.println("You have no notes yet.");
+                System.out.println("No notes found for " + user.getUsername() + ".");
                 return;
             }
 
-            System.out.println("\n--- ALL NOTES ---");
+            System.out.println("\n--- ALL NOTES FOR: " + user.getUsername() + " ---");
             for (int i = 0; i < userNotes.size(); i++) {
                 System.out.println((i + 1) + ". " + userNotes.get(i).getTitle());
             }
             System.out.println("0. Exit");
-            System.out.println("Choose one note to manage: ");
+            System.out.println("Choose note to manage by number: ");
 
-            int choice = Integer.parseInt(scanner.nextLine());
-            if (choice == 0) {
-                inNotes = false;
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input, use numbers.");
                 continue;
             }
+
+            if (choice == 0) return;
 
             if (choice > 0 && choice <= userNotes.size()) {
                 Note selectedNote = userNotes.get(choice - 1);
