@@ -41,22 +41,15 @@ public class ConsoleMenu {
         System.out.println("Enter your username:");
         String username = scanner.nextLine();
 
-        //Är det ok här och inte i service? fördel, kontrolleras direkt och ger möjlighet att ändra innan man matar in fler
-        //uppgifter. Nackdel: belastar ui?
-        while (service.existsByUsername(username)) {
-            System.out.println("Username already exists. Try antoher: ");
-            username = scanner.nextLine();
-        }
-
         System.out.println("Enter your password:");
-        String password = scanner.nextLine();
+        String password = scanner.nextLine().trim();
 
         boolean success = service.register(username, password);
 
         if (success) {
             System.out.println("User registered successfully");
         } else {
-            System.out.println("Username or Password is incorrect");
+            System.out.println("Could not register user");
         }
     }
 
@@ -70,13 +63,13 @@ public class ConsoleMenu {
         User user = service.login(username, password);
         if (user != null) {
             String role = user.getRole().toString().toLowerCase();
-            System.out.println("Login successful! Role: " + role);
+            System.out.println("Login successful for user: " + role);
             switch (user.getRole()) {
                 case ADMIN -> adminMenu(user);
                 case USER -> userMenu(user);
             }
         } else {
-            System.out.println("Invalid username or password.");
+            System.out.println("Login failed");
         }
     }
 
