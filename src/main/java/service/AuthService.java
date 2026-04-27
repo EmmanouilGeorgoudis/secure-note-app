@@ -68,7 +68,7 @@ public class AuthService {
         return notesForUser;
     }
 
-    public List<User> getAllUsers(User admin) {
+    public List<User> getUsersForAdmin(User admin) {
         if (admin == null || admin.getRole() != Role.ADMIN) {
             System.out.println("Unarthorized access attempt!");
             return new ArrayList<>();
@@ -76,8 +76,8 @@ public class AuthService {
         return repository.findAllUsers();
     }
 
-    public List<User> getAllUsersByRole(User admin) {
-        if (admin == null || admin.getRole() != Role.SUPERVISOR) {
+    public List<User> getUsersForSupervisor(User supervisor) {
+        if (supervisor == null || supervisor.getRole() != Role.SUPERVISOR) {
             System.out.println("Unarthorized access attempt!");
             return new ArrayList<>();
         }

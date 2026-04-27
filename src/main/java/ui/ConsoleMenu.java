@@ -139,7 +139,7 @@ public class ConsoleMenu {
 
             switch (choice) {
                 case "1" -> {
-                    List<User> allUsers = service.getAllUsersByRole(superVisor);
+                    List<User> allUsers = service.getUsersForSupervisor(superVisor);
                     for (User u : allUsers) {
                         System.out.println("ID: " + u.getId() + " | Name: " + u.getUsername() + " | Role: " + u.getRole());
                     }
@@ -169,9 +169,9 @@ public class ConsoleMenu {
     }
 
     private void manageNotes(User user) {
-        boolean inNotes = true;
+        boolean inMenu = true;
 
-        while (inNotes) {
+        while (inMenu) {
             List<Note> userNotes = service.getNotesForUser(user);
 
             if (userNotes.isEmpty()) {
@@ -220,10 +220,10 @@ public class ConsoleMenu {
     }
 
     private void manageUsers(User admin) {
-        boolean inAdminMenu = true;
+        boolean inMenu = true;
 
-        while (inAdminMenu) {
-            List<User> allUsers = service.getAllUsers(admin);
+        while (inMenu) {
+            List<User> allUsers = service.getUsersForAdmin(admin);
 
             if (allUsers.isEmpty()) {
                 System.out.println("No users found.");
