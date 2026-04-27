@@ -224,16 +224,16 @@ public class ConsoleMenu {
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
             System.out.println("3. Manage users");
-            System.out.println("4. DELETE my acount");
+            System.out.println("4. Account settings");
             System.out.println("5. Logout");
 
-            String choice = scanner.nextLine();
+            String choice = scanner.nextLine().trim();
 
             switch (choice) {
                 case "1" -> createNote(admin);
                 case "2" -> manageNotes(admin);
                 case "3" -> manageUsers(admin);
-                case "4" -> {deleteUserUi(admin);return;}
+                case "4" -> {manageAccount(admin);return;}
                 case "5" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
@@ -290,6 +290,7 @@ public class ConsoleMenu {
         if (scanner.nextLine().equalsIgnoreCase("y")) {
             if (service.deleteUser(selectedUser.getId())) {
                 System.out.println("Account deleted.");
+                return true;
             } else {
                 System.out.println("Could not delete user.");
             }
