@@ -176,6 +176,26 @@ public class UserRepository {
         }
     }
 
+    public boolean updateUser(int UserId, String newUsername, String newPassword) {
+        String sql = "UPDATE users SET username = ?, password = ? WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+
+            statement.setString(1, newUsername);
+            statement.setString(2, newPassword);
+            statement.setInt(3, UserId);
+
+            int rows = statement.executeUpdate();
+
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean deleteUser(int userId) {
         String sql = "DELETE FROM users WHERE id = ?";
 
