@@ -77,8 +77,7 @@ public class ConsoleMenu {
             System.out.println("\n--- USER MENU ---");
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
-            System.out.println("3. Manage account");
-            System.out.println("3. DELETE my account");
+            System.out.println("3. Account settings");
             System.out.println("4. Logout");
 
             String choice = scanner.nextLine();
@@ -86,7 +85,10 @@ public class ConsoleMenu {
             switch (choice) {
                 case "1" -> createNote(user);
                 case "2" -> manageNotes(user);
-                case "3" -> {deleteUserUi(user);return;}
+                case "3" -> {
+                    if (manageAccount(user))
+                        return;
+                }
                 case "4" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
@@ -238,26 +240,24 @@ public class ConsoleMenu {
         }
     }
 
-    private void manageAccount(User user) {
+    private boolean manageAccount(User user) {
         boolean inAccountMenu = true;
 
         while (inAccountMenu) {
-            System.out.println("\n--- MANAGE ACCOUNT MENU ---");
-            System.out.println("1. Change username");
-            System.out.println("2. Change password");
-            System.out.println("3. DELETE my acount");
-            System.out.println("4. Logout");
+            System.out.println("\n--- MANAGE ACCOUNT: " + user.getUsername() + " ---");
+            System.out.println("1. Update username or/and password");
+            System.out.println("2. DELETE my acount");
+            System.out.println("0. Exit");
 
             String choice = scanner.nextLine().trim();
 
             switch (choice) {
-                case "1" -> changeUsername(user);
-                case "2" -> changePassword(user);
-                case "3" -> {
-                    deleteUserUi(user);
-                    return;
+                case "1" -> updateAccountUi(user);
+                case "2" -> {
+                    if (deleteUserUi(user))
+                        return true;
                 }
-                case "4" -> inAccountMenu = false;
+                case "0" -> inAccountMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
@@ -285,14 +285,34 @@ public class ConsoleMenu {
         }
     }
 
-    private void deleteUserUi(User selectedUser) {
+    private boolean deleteUserUi(User selectedUser) {
         System.out.print("ARE YOU SURE? This will delete user '" + selectedUser.getUsername() + "' and ALL notes! (y/n): ");
         if (scanner.nextLine().equalsIgnoreCase("y")) {
             if (service.deleteUser(selectedUser.getId())) {
-                System.out.println("Deleted.");
+                System.out.println("Account deleted.");
             } else {
                 System.out.println("Could not delete user.");
             }
+        }
+        return false;
+    }
+
+    private void updateAccountUi(User user) {
+
+        System.out.println("\nLeave blank and press ENTER to keep current value.");
+
+        System.out.print("New username (Current: " + user.getUsername() + "): ");
+        String newUsername = scanner.nextLine().trim();
+
+        System.out.print("New password: ");
+        String newPassword = scanner.nextLine().trim();
+
+        if (service.updateAccount(user, newUsername, newPassword)) {
+            System.out.println("Account updated successfully!");
+            if (!newUsername.isBlank()) user.setUsername(newUsername);
+            if (!newPassword.isBlank()) user.setPassword(newPassword);
+        } else {
+            System.out.println("Update failed (username might be taken).");
         }
     }
 }

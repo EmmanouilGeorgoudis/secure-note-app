@@ -97,4 +97,14 @@ public class AuthService {
     public boolean deleteUser(int userId) {
         return repository.deleteUser(userId);
     }
+
+    public boolean updateAccount() {
+        String finalUsername = (newUsername == null || newUsername.isBlank())
+                ? user.getUsername() : newUsername;
+
+        String finalPassword = (newPassword == null || newPassword.isBlank())
+                ? user.getPassword() : newPassword;
+
+        return repository.updateUser(user.getId(), finalUsername, finalPassword);
+    }
 }
