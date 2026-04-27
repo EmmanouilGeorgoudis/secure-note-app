@@ -110,6 +110,7 @@ public class AuthService {
             return false;
         }
 
-        return repository.updateUser(user.getId(), finalUsername, finalPassword);
+        String hashedPassword = BCrypt.hashpw(finalPassword, BCrypt.gensalt());
+        return repository.updateUser(user.getId(), finalUsername, hashedPassword);
     }
 }
