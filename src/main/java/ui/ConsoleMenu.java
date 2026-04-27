@@ -58,15 +58,21 @@ public class ConsoleMenu {
         String password = scanner.nextLine().trim();
 
         User user = service.login(username, password);
+
         if (user != null) {
-            String role = user.getRole().toString().toLowerCase();
-            System.out.println("Login successful for " + role + ": ");
-            switch (user.getRole()) {
-                case ADMIN -> adminMenu(user);
-                case USER -> userMenu(user);
-            }
+            authorizeUser(user);
         } else {
             System.out.println("Login failed");
+        }
+    }
+
+    private void authorizeUser(User user) {
+        String role = user.getRole().toString().toLowerCase();
+        System.out.println("Login successful for " + role + ": ");
+
+        switch (user.getRole()) {
+            case ADMIN -> adminMenu(user);
+            case USER -> userMenu(user);
         }
     }
 
@@ -165,7 +171,7 @@ public class ConsoleMenu {
         boolean inAdminMenu = true;
 
         while (inAdminMenu) {
-            List<User> allUsers = service.getAllUsers(admin); //Skapa samma logik uppåt till repo som service.getNotesForUser(user);
+            List<User> allUsers = service.getAllUsers(admin);
 
             if (allUsers.isEmpty()) {
                 System.out.println("No users found.");
