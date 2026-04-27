@@ -68,7 +68,6 @@ public class AuthService {
         return notesForUser;
     }
 
-    //Måste kontrollera dess funktionalitet ADMIN och SUPERVISOR i if-satsen!!!
     public List<User> getAllUsers(User admin) {
         if (admin == null || admin.getRole() != Role.ADMIN) {
             System.out.println("Unarthorized access attempt!");
@@ -77,7 +76,7 @@ public class AuthService {
         return repository.findAllUsers();
     }
 
-    public List<User> getUsersAndAdmins(User admin) {
+    public List<User> getAllUsersByRole(User admin) {
         if (admin == null || admin.getRole() != Role.SUPERVISOR) {
             System.out.println("Unarthorized access attempt!");
             return new ArrayList<>();

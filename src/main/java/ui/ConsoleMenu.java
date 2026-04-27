@@ -140,12 +140,18 @@ public class ConsoleMenu {
             String choice = scanner.nextLine().trim();
 
             switch (choice) {
-                case "1" -> service.getUsersAndAdmins(superVisor);
+                case "1" -> {
+                    List<User> allUsers = service.getAllUsersByRole(superVisor);
+                    for (User u : allUsers) {
+                        System.out.println("ID: " + u.getId() + " | Name: " + u.getUsername() + " | Role: " + u.getRole());
+                    }
+                }
                 case "2" -> changeRole(superVisor);
                 case "3" -> {manageAccount(superVisor);return;}
                 case "4" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
+
         }
     }
 

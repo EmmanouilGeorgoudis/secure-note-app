@@ -56,14 +56,13 @@ public class UserRepository {
     }
 
     public boolean updateRole(int userId, Role newRole) {
-        String sql = "UPDATE users SET role = ?, WHERE id = ?";
+        String sql = "UPDATE users SET role = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, newTitle);
-            statement.setString(2, newContent);
-            statement.setInt(3, noteId);
+            statement.setString(1, newRole.name()); //Varför är .name bättre än .toString?
+            statement.setInt(2, userId);
 
             int rows = statement.executeUpdate();
 
