@@ -96,7 +96,6 @@ public class AuthService {
         return repository.updateNote(oldNote.getId(), finalTitle, finalContent);
     }
 
-    //Ska jag ha samma namn i auth och repo??
     public boolean deleteNote(int noteId) {
         return repository.deleteNote(noteId);
     }

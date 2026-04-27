@@ -8,8 +8,6 @@ import service.AuthService;
 import java.util.List;
 import java.util.Scanner;
 
-
-//Lägg till funktion för att kunna ta bort egen anteckning för user
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);

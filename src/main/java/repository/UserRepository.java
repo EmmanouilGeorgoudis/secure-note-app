@@ -14,7 +14,6 @@ import java.util.List;
 
 public class UserRepository {
 
-    //Jag har valt id som nyckel så att användaren kommer ha möjlighet att byta användarnamn vid uppdaterad version
     public boolean saveNote(int userId, String title, String noteContent) {
         String sql = "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)";
 
@@ -106,7 +105,7 @@ public class UserRepository {
         }
         return false;
     }
-//Fråga till Yayha i notes
+
     public User findByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -172,8 +171,6 @@ public class UserRepository {
         return users;
     }
 
-    //Är det nödvändigt att gå via service getNotesForUser? känns som den inte gör nåt vettig,
-    //endast följer arkitekturen.. fråga utbildaren
     public List<Note> findNotesByUserId(int userId) {
         List<Note> notes = new ArrayList<>();
         String sql = "SELECT id, user_id, title, content FROM notes WHERE user_id = ?";
@@ -197,7 +194,6 @@ public class UserRepository {
         }
         return notes;
     }
-
 
     public boolean saveUser(String username, String password, String role) {
         String sql = "INSERT INTO users (username, password, role) VALUES(?, ?, ?)";

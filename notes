@@ -19,3 +19,6 @@ Reflektion: intressant hur benämning av metoder som betjänar varandra påverka
 getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
 
 Berätta om return efter DELETE, så att man inte kan spara i obefintligt konto och få exception
+
+Är det nödvändigt att gå via service med t ex getNotesForUser? känns som att visa metoder skickar bara vidare information
+utan nån vettigare funktion, följer endast arkitekturen.. fråga utbildaren
