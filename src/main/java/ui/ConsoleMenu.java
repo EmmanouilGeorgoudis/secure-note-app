@@ -1,6 +1,7 @@
 package ui;
 
 import model.Note;
+import model.Role;
 import model.User;
 import service.AuthService;
 
@@ -102,6 +103,52 @@ public class ConsoleMenu {
         }
     }
 
+    private void adminMenu(User admin) {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("\n--- ADMIN MENU ---");
+            System.out.println("1. Create note");
+            System.out.println("2. Manage notes");
+            System.out.println("3. Manage users");
+            System.out.println("4. Account settings");
+            System.out.println("5. Logout");
+
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1" -> createNote(admin);
+                case "2" -> manageNotes(admin);
+                case "3" -> manageUsers(admin);
+                case "4" -> {manageAccount(admin);return;}
+                case "5" -> inMenu = false;
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private void supervisorMenu(User superVisor) {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("\n--- SUPERVISOR MENU ---");
+            System.out.println("1. List all users & roles");
+            System.out.println("2. Change User Role");
+            System.out.println("3. Account settings");
+            System.out.println("4. Exit");
+
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1" -> service.getUsersAndAdmins(superVisor);
+                case "2" -> changeRole(superVisor);
+                case "3" -> {manageAccount(superVisor);return;}
+                case "4" -> inMenu = false;
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
     private void createNote(User user) {
 
         System.out.println("Write your note title: ");
@@ -157,8 +204,8 @@ public class ConsoleMenu {
                 String action = scanner.nextLine();
 
                 switch (action) {
-                    case "1" -> updateNoteUi(selectedNote);
-                    case "2" -> deleteNoteUi(selectedNote);
+                    case "1" -> updateNote(selectedNote);
+                    case "2" -> deleteNote(selectedNote);
                     case "0" -> {}
                     default -> System.out.println("Invalid choice. Try again");
                 }
@@ -213,36 +260,12 @@ public class ConsoleMenu {
                 String action = scanner.nextLine();
                 switch (action) {
                     case "1" -> manageNotes(selectedUser);
-                    case "2" -> deleteUserUi(selectedUser);
+                    case "2" -> deleteUser(selectedUser);
                     case "0" -> {}
                     default -> System.out.println("Invalid action.");
                 }
             } else {
                 System.out.println("User not found.");
-            }
-        }
-    }
-
-    private void adminMenu(User admin) {
-        boolean inMenu = true;
-
-        while (inMenu) {
-            System.out.println("\n--- ADMIN MENU ---");
-            System.out.println("1. Create note");
-            System.out.println("2. Manage notes");
-            System.out.println("3. Manage users");
-            System.out.println("4. Account settings");
-            System.out.println("5. Logout");
-
-            String choice = scanner.nextLine().trim();
-
-            switch (choice) {
-                case "1" -> createNote(admin);
-                case "2" -> manageNotes(admin);
-                case "3" -> manageUsers(admin);
-                case "4" -> {manageAccount(admin);return;}
-                case "5" -> inMenu = false;
-                default -> System.out.println("Invalid choice.");
             }
         }
     }
@@ -259,9 +282,9 @@ public class ConsoleMenu {
             String choice = scanner.nextLine().trim();
 
             switch (choice) {
-                case "1" -> updateAccountUi(user);
+                case "1" -> updateAccount(user);
                 case "2" -> {
-                    if (deleteUserUi(user))
+                    if (deleteUser(user))
                         return true;
                 }
                 case "0" -> inAccountMenu = false;
@@ -270,7 +293,7 @@ public class ConsoleMenu {
         } return false;
     }
 
-    private void updateNoteUi(Note selectedNote) {
+    private void updateNote(Note selectedNote) {
         System.out.println("Actual title: " + selectedNote.getTitle());
         System.out.print("New title (ENTER to keep): ");
         String newTitle = scanner.nextLine();
@@ -283,29 +306,7 @@ public class ConsoleMenu {
         }
     }
 
-    private void deleteNoteUi(Note selectedNote) {
-        System.out.print("Delete '" + selectedNote.getTitle() + "'? (y/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
-            if (service.deleteNote(selectedNote.getId())) {
-                System.out.println("Deleted.");
-            }
-        }
-    }
-
-    private boolean deleteUserUi(User selectedUser) {
-        System.out.print("ARE YOU SURE? This will delete user '" + selectedUser.getUsername() + "' and ALL notes! (y/n): ");
-        if (scanner.nextLine().equalsIgnoreCase("y")) {
-            if (service.deleteUser(selectedUser.getId())) {
-                System.out.println("Account deleted.");
-                return true;
-            } else {
-                System.out.println("Could not delete user.");
-            }
-        }
-        return false;
-    }
-
-    private void updateAccountUi(User user) {
+    private void updateAccount(User user) {
 
         System.out.println("\nLeave blank and press ENTER to keep current value.");
 
@@ -321,6 +322,64 @@ public class ConsoleMenu {
             if (!newPassword.isBlank()) user.setPassword(newPassword);
         } else {
             System.out.println("Update failed.");
+        }
+    }
+
+    private void deleteNote(Note selectedNote) {
+        System.out.print("Delete '" + selectedNote.getTitle() + "'? (y/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("y")) {
+            if (service.deleteNote(selectedNote.getId())) {
+                System.out.println("Deleted.");
+            }
+        }
+    }
+
+    private boolean deleteUser(User selectedUser) {
+        System.out.print("ARE YOU SURE? This will delete user '" + selectedUser.getUsername() + "' and ALL notes! (y/n): ");
+        if (scanner.nextLine().equalsIgnoreCase("y")) {
+            if (service.deleteUser(selectedUser.getId())) {
+                System.out.println("Account deleted.");
+                return true;
+            } else {
+                System.out.println("Could not delete user.");
+            }
+        }
+        return false;
+    }
+
+    private void changeRole(User supervisor) {
+
+        int userId;
+        try {
+            System.out.print("Enter ID of user to change role: ");
+            userId = Integer.parseInt(scanner.nextLine());
+            if (userId == 0) return;
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID. Please enter a number.");
+            return;
+        }
+
+        System.out.println("Select new role:");
+        System.out.println("1. ADMIN");
+        System.out.println("2. USER");
+        System.out.print("Choice: ");
+
+        String choice = scanner.nextLine().trim();
+        Role newRole;
+
+        switch (choice) {
+            case "1" -> newRole = Role.ADMIN;
+            case "2" -> newRole = Role.USER;
+            default -> {
+                System.out.println("Invalid choice. Role update cancelled.");
+                return;
+            }
+        }
+
+        if (service.updateUserRole(supervisor, userId, newRole)) {
+            System.out.println("Role updated to " + newRole.toString() + " successfully!");
+        } else {
+            System.out.println("Failed to update role. Check ID or permission.");
         }
     }
 }

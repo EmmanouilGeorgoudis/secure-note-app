@@ -68,6 +68,7 @@ public class AuthService {
         return notesForUser;
     }
 
+    //Måste kontrollera dess funktionalitet ADMIN och SUPERVISOR i if-satsen!!!
     public List<User> getAllUsers(User admin) {
         if (admin == null || admin.getRole() != Role.ADMIN) {
             System.out.println("Unarthorized access attempt!");
@@ -76,6 +77,13 @@ public class AuthService {
         return repository.findAllUsers();
     }
 
+    public List<User> getUsersAndAdmins(User admin) {
+        if (admin == null || admin.getRole() != Role.SUPERVISOR) {
+            System.out.println("Unarthorized access attempt!");
+            return new ArrayList<>();
+        }
+        return repository.findAllUsersByRole();
+    }
 
     public boolean updateNote(Note oldNote, String inputTitle, String inputContent) {
         String finalTitle = (inputTitle == null || inputTitle.isBlank())
@@ -112,5 +120,14 @@ public class AuthService {
 
         String hashedPassword = BCrypt.hashpw(finalPassword, BCrypt.gensalt());
         return repository.updateUser(user.getId(), finalUsername, hashedPassword);
+    }
+
+    public boolean updateUserRole(User supervisor, int userId, Role newRole) {
+        if (supervisor.getRole() != Role.SUPERVISOR) {
+            System.out.println("Security Alert: Unauthorized attempt to change role!");
+            return false;
+        }
+
+        return repository.updateRole(userId, newRole);
     }
 }
