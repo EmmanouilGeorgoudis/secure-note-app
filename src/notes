@@ -9,3 +9,11 @@ Ska jag ändra Exit till en siffra? t ex 0
 
 i findByUsername i repository, skulle jag ist för en User i taget kunna skapa en String lista
 med namn och ta bort alla onödiga getters? eftersom dess syfte är att bara hitta om username är upptaget
+
+Ska bygga en manageAcount metod. Ett framtid logiskt problem kan bli när Admin går in i manageAcount, Admin ska inte kunna
+ändra andras lösen eller användarnamn förutom endast ta bort. Räcker det med att manageAcount är som val innan Admin valt
+att se Users data?
+
+Till presentationen, jag har gått efter utbildare principer/stil(t ex med booleans i menyer), strukturen i metodordning nedan har en logik, är den bra?
+Reflektion: intressant hur benämning av metoder som betjänar varandra påverkas och visar arkitekturisk struktur såsom
+getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
