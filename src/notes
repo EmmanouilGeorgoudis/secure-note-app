@@ -17,3 +17,5 @@ att se Users data?
 Till presentationen, jag har gått efter utbildare principer/stil(t ex med booleans i menyer), strukturen i metodordning nedan har en logik, är den bra?
 Reflektion: intressant hur benämning av metoder som betjänar varandra påverkas och visar arkitekturisk struktur såsom
 getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
+
+Berätta om return efter DELETE, så att man inte kan spara i obefintligt konto och få exception

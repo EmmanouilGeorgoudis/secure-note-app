@@ -7,6 +7,8 @@ import service.AuthService;
 import java.util.List;
 import java.util.Scanner;
 
+
+//Lägg till funktion för att kunna ta bort egen anteckning för user
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -75,7 +77,8 @@ public class ConsoleMenu {
             System.out.println("\n--- USER MENU ---");
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
-            System.out.println("3. DELETE my acount");
+            System.out.println("3. Manage account");
+            System.out.println("3. DELETE my account");
             System.out.println("4. Logout");
 
             String choice = scanner.nextLine();
@@ -230,6 +233,31 @@ public class ConsoleMenu {
                 case "3" -> manageUsers(admin);
                 case "4" -> {deleteUserUi(admin);return;}
                 case "5" -> inMenu = false;
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private void manageAccount(User user) {
+        boolean inAccountMenu = true;
+
+        while (inAccountMenu) {
+            System.out.println("\n--- MANAGE ACCOUNT MENU ---");
+            System.out.println("1. Change username");
+            System.out.println("2. Change password");
+            System.out.println("3. DELETE my acount");
+            System.out.println("4. Logout");
+
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1" -> changeUsername(user);
+                case "2" -> changePassword(user);
+                case "3" -> {
+                    deleteUserUi(user);
+                    return;
+                }
+                case "4" -> inAccountMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
