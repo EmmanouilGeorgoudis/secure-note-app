@@ -98,12 +98,17 @@ public class AuthService {
         return repository.deleteUser(userId);
     }
 
-    public boolean updateAccount() {
+    public boolean updateAccount(User user, String newUsername, String newPassword) {
         String finalUsername = (newUsername == null || newUsername.isBlank())
                 ? user.getUsername() : newUsername;
 
         String finalPassword = (newPassword == null || newPassword.isBlank())
                 ? user.getPassword() : newPassword;
+
+        if(repository.existsByUsername(newUsername)) {
+            System.out.println("Username already exists");
+            return false;
+        }
 
         return repository.updateUser(user.getId(), finalUsername, finalPassword);
     }

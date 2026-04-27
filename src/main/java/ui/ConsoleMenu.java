@@ -260,7 +260,7 @@ public class ConsoleMenu {
                 case "0" -> inAccountMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
-        }
+        } return false;
     }
 
     private void updateNoteUi(Note selectedNote) {
