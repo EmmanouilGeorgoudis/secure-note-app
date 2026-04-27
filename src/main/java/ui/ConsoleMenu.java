@@ -312,7 +312,7 @@ public class ConsoleMenu {
             if (!newUsername.isBlank()) user.setUsername(newUsername);
             if (!newPassword.isBlank()) user.setPassword(newPassword);
         } else {
-            System.out.println("Update failed (username might be taken).");
+            System.out.println("Update failed.");
         }
     }
 }

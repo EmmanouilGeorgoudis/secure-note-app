@@ -105,7 +105,7 @@ public class AuthService {
         String finalPassword = (newPassword == null || newPassword.isBlank())
                 ? user.getPassword() : newPassword;
 
-        if(repository.existsByUsername(newUsername)) {
+        if(repository.existsByUsername(newUsername) && !newUsername.equals(user.getUsername())) {
             System.out.println("Username already exists");
             return false;
         }
