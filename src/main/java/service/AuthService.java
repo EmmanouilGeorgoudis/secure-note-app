@@ -23,12 +23,10 @@ public class AuthService {
             System.out.println("Password is empty");
             return false;
         }
-
-        if(repository.existsByUsername(username)){
+        if(repository.existsByUsername(username)) {
             System.out.println("Username already exists");
             return false;
         }
-
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         return repository.saveUser(username, hashedPassword, "USER");
     }
@@ -98,5 +96,21 @@ public class AuthService {
 
     public boolean deleteUser(int userId) {
         return repository.deleteUser(userId);
+    }
+
+    public boolean updateAccount(User user, String newUsername, String newPassword) {
+        String finalUsername = (newUsername == null || newUsername.isBlank())
+                ? user.getUsername() : newUsername;
+
+        String finalPassword = (newPassword == null || newPassword.isBlank())
+                ? user.getPassword() : newPassword;
+
+        if(repository.existsByUsername(newUsername) && !newUsername.equals(user.getUsername())) {
+            System.out.println("Username already exists");
+            return false;
+        }
+
+        String hashedPassword = BCrypt.hashpw(finalPassword, BCrypt.gensalt());
+        return repository.updateUser(user.getId(), finalUsername, hashedPassword);
     }
 }

@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-//Till presentationen, jag har gått efter utbildare principer/stil(t ex med booleans i menyer), strukturen i metodordning nedan har en logik, är den bra?
-//Reflektion: intressant hur benämning av metoder som betjänar varandra påverkas och visar arkitekturisk struktur såsom
-//getNotesForUser i AuthSerivce som blir findNotesByUserId i repository
-
+//Lägg till funktion för att kunna ta bort egen anteckning för user
 public class ConsoleMenu {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -39,7 +36,7 @@ public class ConsoleMenu {
 
     private void register() {
         System.out.println("Enter your username:");
-        String username = scanner.nextLine();
+        String username = scanner.nextLine().trim();
 
         System.out.println("Enter your password:");
         String password = scanner.nextLine().trim();
@@ -63,7 +60,7 @@ public class ConsoleMenu {
         User user = service.login(username, password);
         if (user != null) {
             String role = user.getRole().toString().toLowerCase();
-            System.out.println("Login successful for user: " + role);
+            System.out.println("Login successful for " + role + ": ");
             switch (user.getRole()) {
                 case ADMIN -> adminMenu(user);
                 case USER -> userMenu(user);
@@ -80,7 +77,7 @@ public class ConsoleMenu {
             System.out.println("\n--- USER MENU ---");
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
-            System.out.println("3. DELETE my acount");
+            System.out.println("3. Account settings");
             System.out.println("4. Logout");
 
             String choice = scanner.nextLine();
@@ -88,7 +85,10 @@ public class ConsoleMenu {
             switch (choice) {
                 case "1" -> createNote(user);
                 case "2" -> manageNotes(user);
-                case "3" -> {deleteUserUi(user);return;}
+                case "3" -> {
+                    if (manageAccount(user))
+                        return;
+                }
                 case "4" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
@@ -224,20 +224,43 @@ public class ConsoleMenu {
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
             System.out.println("3. Manage users");
-            System.out.println("4. DELETE my acount");
+            System.out.println("4. Account settings");
             System.out.println("5. Logout");
 
-            String choice = scanner.nextLine();
+            String choice = scanner.nextLine().trim();
 
             switch (choice) {
                 case "1" -> createNote(admin);
                 case "2" -> manageNotes(admin);
                 case "3" -> manageUsers(admin);
-                case "4" -> {deleteUserUi(admin);return;}
+                case "4" -> {manageAccount(admin);return;}
                 case "5" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
+    }
+
+    private boolean manageAccount(User user) {
+        boolean inAccountMenu = true;
+
+        while (inAccountMenu) {
+            System.out.println("\n--- MANAGE ACCOUNT: " + user.getUsername() + " ---");
+            System.out.println("1. Update username or/and password");
+            System.out.println("2. DELETE my acount");
+            System.out.println("0. Exit");
+
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1" -> updateAccountUi(user);
+                case "2" -> {
+                    if (deleteUserUi(user))
+                        return true;
+                }
+                case "0" -> inAccountMenu = false;
+                default -> System.out.println("Invalid choice.");
+            }
+        } return false;
     }
 
     private void updateNoteUi(Note selectedNote) {
@@ -262,14 +285,35 @@ public class ConsoleMenu {
         }
     }
 
-    private void deleteUserUi(User selectedUser) {
+    private boolean deleteUserUi(User selectedUser) {
         System.out.print("ARE YOU SURE? This will delete user '" + selectedUser.getUsername() + "' and ALL notes! (y/n): ");
         if (scanner.nextLine().equalsIgnoreCase("y")) {
             if (service.deleteUser(selectedUser.getId())) {
-                System.out.println("Deleted.");
+                System.out.println("Account deleted.");
+                return true;
             } else {
                 System.out.println("Could not delete user.");
             }
+        }
+        return false;
+    }
+
+    private void updateAccountUi(User user) {
+
+        System.out.println("\nLeave blank and press ENTER to keep current value.");
+
+        System.out.print("New username (Current: " + user.getUsername() + "): ");
+        String newUsername = scanner.nextLine().trim();
+
+        System.out.print("New password: ");
+        String newPassword = scanner.nextLine().trim();
+
+        if (service.updateAccount(user, newUsername, newPassword)) {
+            System.out.println("Account updated successfully!");
+            if (!newUsername.isBlank()) user.setUsername(newUsername);
+            if (!newPassword.isBlank()) user.setPassword(newPassword);
+        } else {
+            System.out.println("Update failed.");
         }
     }
 }
