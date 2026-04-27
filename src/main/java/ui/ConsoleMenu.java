@@ -71,6 +71,7 @@ public class ConsoleMenu {
         System.out.println("Login successful for " + role + ": ");
 
         switch (user.getRole()) {
+            case SUPERVISOR -> supervisorMenu(user);
             case ADMIN -> adminMenu(user);
             case USER -> userMenu(user);
         }
