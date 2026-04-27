@@ -23,6 +23,10 @@ public class AuthService {
             System.out.println("Password is empty");
             return false;
         }
+        if(repository.existsByUsername(username)) {
+            System.out.println("Username already exists");
+            return false;
+        }
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         return repository.saveUser(username, hashedPassword, "USER");
     }
