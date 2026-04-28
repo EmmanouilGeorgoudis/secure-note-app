@@ -60,7 +60,7 @@ public class UserRepository {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setString(1, newRole.name()); //Varför är .name bättre än .toString?
+            statement.setString(1, newRole.name());
             statement.setInt(2, userId);
 
             int rows = statement.executeUpdate();
@@ -148,8 +148,6 @@ public class UserRepository {
         return users;
     }
 
-    //Här önskar jag jag kunde ha en metod findAllUsersByRole som man matade in via parametern vilka roller. Hade säkert
-    // varit mycket smidigare med Kotlin där man kan ha olika många parametrar i en metod, eller deklarera en sträng i parametrarna
     public List<User> findAllUsersByRole() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE role != 'SUPERVISOR'";

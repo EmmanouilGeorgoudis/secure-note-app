@@ -22,3 +22,6 @@ Berätta om return efter DELETE, så att man inte kan spara i obefintligt konto 
 
 Är det nödvändigt att gå via service med t ex getNotesForUser? känns som att visa metoder skickar bara vidare information
 utan nån vettigare funktion, följer endast arkitekturen.. fråga utbildaren
+
+Kan man ha metod findAllUsers bara ist för findAllUsersByRole mm, som man matade in via parametern om roll, id eller namn
+t ex? lite som man kan med Kotlin

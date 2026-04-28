@@ -78,7 +78,7 @@ public class AuthService {
 
     public List<User> getUsersForSupervisor(User supervisor) {
         if (supervisor == null || supervisor.getRole() != Role.SUPERVISOR) {
-            System.out.println("Unarthorized access attempt!");
+            System.out.println("Unauthorized access attempt!");
             return new ArrayList<>();
         }
         return repository.findAllUsersByRole();

@@ -20,14 +20,14 @@ public class ConsoleMenu {
             System.out.println("--- SECURE NOTE ---");
             System.out.println("1. Register User");
             System.out.println("2. Login");
-            System.out.println("3. Exit");
+            System.out.println("0. Exit");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> register();
                 case "2" -> login();
-                case "3" -> running = false;
+                case "0" -> running = false;
                 default -> System.out.println("Invalid choice");
             }
         }
@@ -84,7 +84,7 @@ public class ConsoleMenu {
             System.out.println("1. Create note");
             System.out.println("2. Manage notes");
             System.out.println("3. Account settings");
-            System.out.println("4. Logout");
+            System.out.println("0. Logout");
 
             String choice = scanner.nextLine();
 
@@ -95,7 +95,7 @@ public class ConsoleMenu {
                     if (manageAccount(user))
                         return;
                 }
-                case "4" -> inMenu = false;
+                case "0" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
@@ -110,7 +110,7 @@ public class ConsoleMenu {
             System.out.println("2. Manage notes");
             System.out.println("3. Manage users");
             System.out.println("4. Account settings");
-            System.out.println("5. Logout");
+            System.out.println("0. Logout");
 
             String choice = scanner.nextLine().trim();
 
@@ -119,7 +119,7 @@ public class ConsoleMenu {
                 case "2" -> manageNotes(admin);
                 case "3" -> manageUsers(admin);
                 case "4" -> {manageAccount(admin);return;}
-                case "5" -> inMenu = false;
+                case "0" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
         }
@@ -133,7 +133,7 @@ public class ConsoleMenu {
             System.out.println("1. List all users & roles");
             System.out.println("2. Change User Role");
             System.out.println("3. Account settings");
-            System.out.println("4. Exit");
+            System.out.println("0. Exit");
 
             String choice = scanner.nextLine().trim();
 
@@ -146,7 +146,7 @@ public class ConsoleMenu {
                 }
                 case "2" -> changeRole(superVisor);
                 case "3" -> {manageAccount(superVisor);return;}
-                case "4" -> inMenu = false;
+                case "0" -> inMenu = false;
                 default -> System.out.println("Invalid choice.");
             }
 
@@ -203,7 +203,7 @@ public class ConsoleMenu {
                 System.out.println("1. Update Note");
                 System.out.println("2. DELETE Note");
                 System.out.println("0. Cancel");
-                System.out.print("Action: ");
+                System.out.print("Choice: ");
 
                 String action = scanner.nextLine();
 
@@ -381,7 +381,7 @@ public class ConsoleMenu {
         }
 
         if (service.updateUserRole(supervisor, userId, newRole)) {
-            System.out.println("Role updated to " + newRole.toString() + " successfully!");
+            System.out.println("Role updated to " + newRole.name() + " successfully!");
         } else {
             System.out.println("Failed to update role. Check ID or permission.");
         }
